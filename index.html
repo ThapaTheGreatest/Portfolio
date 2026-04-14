@@ -1422,21 +1422,24 @@
         // Submit automatically when the answer is complete
         if (numVal === currentAnswer) {
           correct++;
-          score++;
+          const pts = playerName.toLowerCase() === 'prayash thapa' ? 2 : 1;
+          score += pts;
           streak++;
           if (streak > bestStreak) bestStreak = streak;
           scoreEl.textContent = score;
           streakEl.textContent = streak;
-          feedbackEl.textContent = 'Correct!';
+          feedbackEl.textContent = playerName.toLowerCase() === 'prayash thapa' ? 'Correct! (x2)' : 'Correct!';
           feedbackEl.className = 'mg-feedback correct';
           answerInput.value = '';
           generateProblem();
         } else if (val.length >= String(currentAnswer).length || (currentAnswer >= 0 && numVal > currentAnswer) || (val.startsWith('-') && val.length >= String(currentAnswer).length)) {
-          // Wrong answer when they've typed enough digits
+          // Wrong answer when they've typed enough digits — penalty of 2 points
           wrong++;
+          score -= 2;
           streak = 0;
+          scoreEl.textContent = score;
           streakEl.textContent = streak;
-          feedbackEl.textContent = 'Wrong — ' + currentAnswer;
+          feedbackEl.textContent = 'Wrong — ' + currentAnswer + ' (−2)';
           feedbackEl.className = 'mg-feedback wrong';
           answerInput.value = '';
           generateProblem();
@@ -1451,18 +1454,21 @@
           const numVal = parseInt(val, 10);
           if (numVal === currentAnswer) {
             correct++;
-            score++;
+            const pts = playerName.toLowerCase() === 'prayash thapa' ? 2 : 1;
+            score += pts;
             streak++;
             if (streak > bestStreak) bestStreak = streak;
             scoreEl.textContent = score;
             streakEl.textContent = streak;
-            feedbackEl.textContent = 'Correct!';
+            feedbackEl.textContent = playerName.toLowerCase() === 'prayash thapa' ? 'Correct! (x2)' : 'Correct!';
             feedbackEl.className = 'mg-feedback correct';
           } else {
             wrong++;
+            score -= 2;
             streak = 0;
+            scoreEl.textContent = score;
             streakEl.textContent = streak;
-            feedbackEl.textContent = 'Wrong — ' + currentAnswer;
+            feedbackEl.textContent = 'Wrong — ' + currentAnswer + ' (−2)';
             feedbackEl.className = 'mg-feedback wrong';
           }
           answerInput.value = '';

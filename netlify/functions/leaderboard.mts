@@ -25,7 +25,7 @@ export default async (req: Request) => {
     if (!name || typeof name !== "string" || name.trim().length === 0 || name.trim().length > 20) {
       return Response.json({ error: "Name must be 1-20 characters" }, { status: 400 });
     }
-    if (typeof score !== "number" || score < 0 || !Number.isInteger(score)) {
+    if (typeof score !== "number" || !Number.isInteger(score)) {
       return Response.json({ error: "Invalid score" }, { status: 400 });
     }
 

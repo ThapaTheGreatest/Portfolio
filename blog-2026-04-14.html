@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Purple Terminal Experiment — Prayash Thapa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-deep: #07030d;
+      --purple: #d9c2ff;
+      --purple-mid: #c9a7ff;
+      --purple-deep: #492370;
+      --text-primary: #f4eaff;
+      --font-display: 'Cormorant Garamond', serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-body: 'DM Sans', sans-serif;
+    }
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(198, 154, 255, 0.20), transparent 45%),
+        linear-gradient(180deg, rgba(73, 35, 112, 0.65), rgba(7, 3, 13, 0.98));
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.045),
+        rgba(255,255,255,0.045) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      pointer-events: none;
+      z-index: 5;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.38) 100%);
+      pointer-events: none;
+      z-index: 6;
+    }
+    .terminal-page {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      padding: clamp(1rem, 4vw, 3rem);
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 2rem;
+      border: 1px solid rgba(201, 167, 255, 0.45);
+    }
+    .sidebar {
+      border-right: 1px solid rgba(201, 167, 255, 0.45);
+      padding-right: 1.5rem;
+    }
+    .aperture-mark {
+      width: 90px;
+      height: 90px;
+      border: 1px solid rgba(201, 167, 255, 0.7);
+      display: grid;
+      place-items: center;
+      margin-bottom: 2rem;
+    }
+    .aperture-mark svg {
+      width: 64px;
+      height: 64px;
+      fill: var(--purple);
+      filter: drop-shadow(0 0 10px rgba(217, 194, 255, 0.7));
+    }
+    .sidebar h3, .meta, .nav-link {
+      font-family: var(--font-mono);
+      letter-spacing: 0.14em;
+      color: var(--purple);
+    }
+    .sidebar h3 {
+      font-size: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .nav-link {
+      display: block;
+      color: rgba(230, 215, 255, 0.75);
+      text-decoration: none;
+      font-size: 0.82rem;
+      padding: 0.5rem 0.7rem;
+      border-left: 2px solid transparent;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: white;
+      background: rgba(217, 194, 255, 0.12);
+      border-left-color: var(--purple);
+    }
+    .reader {
+      position: relative;
+      padding: clamp(1rem, 3vw, 3rem);
+    }
+    .reader::before {
+      content: "";
+      position: absolute;
+      inset: 12%;
+      background: rgba(177, 111, 255, 0.18);
+      filter: blur(80px);
+      z-index: -1;
+    }
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.75rem;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(2.4rem, 7vw, 5rem);
+      line-height: 1;
+      margin-bottom: 0.75rem;
+      color: white;
+    }
+    .date {
+      font-family: var(--font-mono);
+      color: var(--purple-mid);
+      margin-bottom: 2rem;
+    }
+    .terminal-body {
+      max-width: 850px;
+      font-family: var(--font-mono);
+      line-height: 1.85;
+      color: rgba(244, 234, 255, 0.88);
+      font-size: clamp(0.92rem, 1.4vw, 1.05rem);
+      white-space: pre-wrap;
+    }
+    .cursor {
+      display: inline-block;
+      width: 0.6em;
+      height: 1.1em;
+      background: var(--purple);
+      margin-left: 0.2em;
+      vertical-align: -0.15em;
+      animation: blink 1s steps(1) infinite;
+    }
+    @keyframes blink {
+      0%, 45% { opacity: 1; }
+      46%, 100% { opacity: 0; }
+    }
+    .bottom-nav {
+      display: flex;
+      gap: 1rem;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+    }
+    .bottom-nav a {
+      border: 1px solid rgba(201, 167, 255, 0.7);
+      background: rgba(201, 167, 255, 0.08);
+      color: #eadcff;
+      font-family: var(--font-mono);
+      padding: 0.65rem 1rem;
+      text-decoration: none;
+    }
+    .bottom-nav a:hover {
+      background: rgba(201, 167, 255, 0.2);
+    }
+    @media (max-width: 760px) {
+      .terminal-page { grid-template-columns: 1fr; }
+      .sidebar {
+        border-right: 0;
+        border-bottom: 1px solid rgba(201, 167, 255, 0.45);
+        padding-right: 0;
+        padding-bottom: 1.5rem;
+      }
+      .meta { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="terminal-page">
+    <aside class="sidebar">
+      <div class="aperture-mark">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M50 5 L72 43 H50 Z"></path>
+          <path d="M72 43 L95 43 L65 65 Z"></path>
+          <path d="M65 65 L76 95 L45 74 Z"></path>
+          <path d="M45 74 L25 95 L31 57 Z"></path>
+          <path d="M31 57 L5 57 L35 35 Z"></path>
+          <path d="M35 35 L24 5 L55 26 Z"></path>
+        </svg>
+      </div>
+
+      <h3>ARCHIVE</h3>
+      <a class="nav-link " href="blog-2026-04-27.html">04.27.2026</a>
+      <a class="nav-link active" href="blog-2026-04-14.html">04.14.2026</a>
+      <a class="nav-link " href="blog-2026-03-29.html">03.29.2026</a>
+      <a class="nav-link" href="index.html#blog">← BACK</a>
+    </aside>
+
+    <main class="reader">
+      <div class="meta">
+        <span>PAGE 2 / 3</span>
+        <span>APERTURE PERSONAL LOG</span>
+      </div>
+
+      <h1>Purple Terminal Experiment</h1>
+      <div class="date">04.14.2026</div>
+
+      <div class="terminal-body" id="terminal-text"></div><span class="cursor"></span>
+
+      <div class="bottom-nav">
+        <a href="blog-2026-04-27.html">← PREVIOUS</a>
+        <a href="index.html#blog">BLOG INDEX</a>
+        <a href="blog-2026-03-29.html">NEXT →</a>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const text = "The interface is not finished.\nThe writing is not finished.\nGood.\n\nA polished empty page is just a museum for bullshit. A rough system that works can be sharpened. This page exists to prove the blog engine has separate pages, date navigation, and enough personality to not look like a dead Bootstrap template.";
+    const target = document.getElementById("terminal-text");
+    let i = 0;
+
+    function type() {
+      if (i < text.length) {
+        target.textContent += text.charAt(i);
+        i++;
+        setTimeout(type, 12);
+      }
+    }
+
+    type();
+  </script>
+</body>
+</html>

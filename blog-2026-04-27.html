@@ -238,5 +238,56 @@
 
     type();
   </script>
+  <div id="blog-admin">
+  <button id="admin-open">EDIT BLOG</button>
+
+  <div id="admin-box" style="display:none;">
+    <input id="admin-code" type="password" placeholder="Code" />
+
+    <input id="edit-title" placeholder="Title" />
+    <textarea id="edit-body" rows="10" placeholder="Blog body"></textarea>
+
+    <button id="save-blog">SAVE</button>
+    <div id="save-status"></div>
+  </div>
+</div>
+
+<script>
+document.getElementById("admin-open").onclick = () => {
+  const box = document.getElementById("admin-box");
+  box.style.display = box.style.display === "none" ? "block" : "none";
+
+  document.getElementById("edit-title").value =
+    document.querySelector("h1").textContent;
+
+  document.getElementById("edit-body").value =
+    document.getElementById("terminal-text").textContent;
+};
+
+document.getElementById("save-blog").onclick = async () => {
+  const code = document.getElementById("admin-code").value;
+  const title = document.getElementById("edit-title").value;
+  const body = document.getElementById("edit-body").value;
+  const file = window.location.pathname.split("/").pop();
+
+  document.getElementById("save-status").textContent = "Saving...";
+
+  const res = await fetch("/api/update-blog", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code, file, title, body })
+  });
+
+  const data = await res.json();
+
+  if (res.ok) {
+    document.getElementById("save-status").textContent = "Saved. Reload soon.";
+    document.querySelector("h1").textContent = title;
+    document.getElementById("terminal-text").textContent = body;
+  } else {
+    document.getElementById("save-status").textContent = data.error;
+  }
+};
+</script>
 </body>
 </html>

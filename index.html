@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Prayash Thapa — Prospective Mathematician</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -21,6 +23,9 @@
       --accent: #c4a882;
       --accent-dim: #8a7356;
       --accent-glow: rgba(196, 168, 130, 0.08);
+      --purple: #d9c2ff;
+      --purple-mid: #c9a7ff;
+      --purple-deep: #492370;
       --border: #222336;
       --border-light: #2a2b40;
       --font-display: 'Cormorant Garamond', serif;
@@ -40,7 +45,6 @@
       line-height: 1.7;
     }
 
-    /* Background grid pattern */
     body::before {
       content: '';
       position: fixed;
@@ -54,7 +58,6 @@
       z-index: 0;
     }
 
-    /* Subtle radial glow */
     body::after {
       content: '';
       position: fixed;
@@ -75,7 +78,6 @@
       padding: 0 2rem;
     }
 
-    /* ─── Header ─── */
     header {
       padding: 4rem 0 2rem;
       border-bottom: 1px solid var(--border);
@@ -99,9 +101,7 @@
       line-height: 1.1;
     }
 
-    .name span {
-      color: var(--accent);
-    }
+    .name span { color: var(--accent); }
 
     .tagline {
       font-family: var(--font-mono);
@@ -112,7 +112,6 @@
       color: var(--text-muted);
     }
 
-    /* ─── Navigation Tabs ─── */
     nav {
       padding: 1.5rem 0 0;
       position: sticky;
@@ -135,6 +134,7 @@
       display: flex;
       gap: 0;
       list-style: none;
+      flex-wrap: wrap;
     }
 
     .tab-btn {
@@ -164,19 +164,10 @@
       transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .tab-btn:hover {
-      color: var(--text-secondary);
-    }
+    .tab-btn:hover { color: var(--text-secondary); }
+    .tab-btn.active { color: var(--accent); }
+    .tab-btn.active::after { transform: scaleX(1); }
 
-    .tab-btn.active {
-      color: var(--accent);
-    }
-
-    .tab-btn.active::after {
-      transform: scaleX(1);
-    }
-
-    /* ─── Tab Content ─── */
     .tab-content {
       padding: 3.5rem 0 6rem;
       min-height: 60vh;
@@ -187,32 +178,30 @@
       animation: fadeIn 0.5s ease;
     }
 
-    .panel.active {
-      display: block;
-    }
+    .panel.active { display: block; }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ─── Main / About Panel ─── */
     .about-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 3rem;
     }
 
-    .about-intro {
-      max-width: 640px;
-    }
+    .about-intro { max-width: 640px; }
 
-    .about-intro h2 {
+    .about-intro h2,
+    .contact-section h2,
+    .pcbuilds-section > h2,
+    .mathgame-section > h2 {
       font-family: var(--font-display);
       font-size: 1.8rem;
       font-weight: 300;
       color: var(--text-primary);
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       font-style: italic;
     }
 
@@ -234,20 +223,34 @@
       margin-top: 2.5rem;
     }
 
-    .detail-card {
+    .detail-card,
+    .credential-item,
+    .contact-row,
+    .package-card,
+    .mg-name-card,
+    .mg-hud-item,
+    .mg-results-card,
+    .mg-leaderboard {
       background: var(--bg-surface);
       border: 1px solid var(--border);
       border-radius: 4px;
+    }
+
+    .detail-card {
       padding: 1.5rem;
       transition: border-color 0.3s ease, background 0.3s ease;
     }
 
-    .detail-card:hover {
+    .detail-card:hover,
+    .contact-row:hover,
+    .package-card:hover {
       border-color: var(--border-light);
       background: var(--bg-elevated);
     }
 
-    .detail-card .label {
+    .detail-card .label,
+    .mg-label,
+    .mg-hud-label {
       font-family: var(--font-mono);
       font-size: 0.65rem;
       font-weight: 500;
@@ -255,6 +258,7 @@
       text-transform: uppercase;
       color: var(--accent-dim);
       margin-bottom: 0.6rem;
+      display: block;
     }
 
     .detail-card .value {
@@ -265,7 +269,6 @@
       line-height: 1.4;
     }
 
-    /* Math decoration */
     .math-decoration {
       margin-top: 3rem;
       padding: 1.5rem 2rem;
@@ -289,208 +292,177 @@
       margin-top: 0.5rem;
       font-weight: 300;
     }
-.blog-terminal {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  min-height: 520px;
-  border: 1px solid #c9a7ff;
-  background:
-    radial-gradient(circle at 50% 30%, rgba(198, 154, 255, 0.20), transparent 45%),
-    linear-gradient(180deg, rgba(73, 35, 112, 0.55), rgba(18, 9, 31, 0.95));
-  box-shadow: 0 0 35px rgba(198, 154, 255, 0.25);
-  position: relative;
-  overflow: hidden;
-}
 
-.blog-terminal::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.04),
-    rgba(255, 255, 255, 0.04) 1px,
-    transparent 1px,
-    transparent 4px
-  );
-  pointer-events: none;
-}
-
-.blog-sidebar {
-  border-right: 1px solid rgba(201, 167, 255, 0.5);
-  padding: 1.5rem;
-  z-index: 1;
-}
-
-.aperture-mark {
-  width: 86px;
-  height: 86px;
-  border: 1px solid rgba(201, 167, 255, 0.7);
-  display: grid;
-  place-items: center;
-  margin-bottom: 2rem;
-}
-
-.aperture-mark svg {
-  width: 60px;
-  height: 60px;
-  fill: #d9c2ff;
-  filter: drop-shadow(0 0 10px rgba(217, 194, 255, 0.7));
-}
-
-.blog-sidebar h3 {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  color: #d9c2ff;
-  margin-bottom: 1rem;
-}
-
-.blog-date-link {
-  display: block;
-  width: 100%;
-  background: transparent;
-  border: 0;
-  border-left: 2px solid transparent;
-  color: rgba(230, 215, 255, 0.7);
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  text-align: left;
-  padding: 0.55rem 0.7rem;
-  cursor: pointer;
-}
-
-.blog-date-link:hover,
-.blog-date-link.active {
-  color: #ffffff;
-  border-left-color: #d9c2ff;
-  background: rgba(217, 194, 255, 0.12);
-}
-
-.blog-reader {
-  position: relative;
-  z-index: 1;
-  padding: 3rem;
-  color: #f4eaff;
-}
-
-.blog-screen-glow {
-  position: absolute;
-  inset: 15%;
-  background: rgba(177, 111, 255, 0.18);
-  filter: blur(70px);
-  z-index: -1;
-}
-
-.blog-meta {
-  display: flex;
-  justify-content: space-between;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: #d9c2ff;
-  letter-spacing: 0.12em;
-  margin-bottom: 2rem;
-}
-
-.blog-reader h2 {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  font-weight: 300;
-  color: #ffffff;
-  margin-bottom: 0.4rem;
-}
-
-.blog-date {
-  font-family: var(--font-mono);
-  color: #c9a7ff;
-  margin-bottom: 1.8rem;
-}
-
-.blog-reader p {
-  font-family: var(--font-mono);
-  max-width: 720px;
-  line-height: 1.8;
-  color: rgba(244, 234, 255, 0.85);
-}
-
-.blog-pagination {
-  display: flex;
-  gap: 1rem;
-  margin-top: 3rem;
-}
-
-.blog-pagination button {
-  border: 1px solid rgba(201, 167, 255, 0.7);
-  background: rgba(201, 167, 255, 0.08);
-  color: #eadcff;
-  font-family: var(--font-mono);
-  padding: 0.65rem 1rem;
-  cursor: pointer;
-}
-
-.blog-pagination button:hover {
-  background: rgba(201, 167, 255, 0.2);
-}
-
-@media (max-width: 700px) {
-  .blog-terminal {
-    grid-template-columns: 1fr;
-  }
-
-  .blog-sidebar {
-    border-right: 0;
-    border-bottom: 1px solid rgba(201, 167, 255, 0.5);
-  }
-
-  .blog-reader {
-    padding: 2rem;
-  }
-}
-    /* ─── Blog Panel ─── */
-    .empty-state {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 40vh;
-      text-align: center;
+    /* Blog */
+    .blog-terminal {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      min-height: 520px;
+      border: 1px solid var(--purple-mid);
+      background:
+        radial-gradient(circle at 50% 30%, rgba(198, 154, 255, 0.20), transparent 45%),
+        linear-gradient(180deg, rgba(73, 35, 112, 0.55), rgba(18, 9, 31, 0.95));
+      box-shadow: 0 0 35px rgba(198, 154, 255, 0.25);
+      position: relative;
+      overflow: hidden;
     }
 
-    .empty-state-icon {
-      width: 80px;
-      height: 80px;
-      border: 1px dashed var(--border-light);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1.5rem;
+    .blog-terminal::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.04),
+        rgba(255, 255, 255, 0.04) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      pointer-events: none;
     }
 
-    .empty-state-icon svg {
-      width: 32px;
-      height: 32px;
-      stroke: var(--text-muted);
-      fill: none;
-      stroke-width: 1.5;
+    .blog-terminal::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, 0.28) 100%);
+      pointer-events: none;
     }
 
-    .empty-state h3 {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      font-weight: 300;
-      font-style: italic;
-      color: var(--text-secondary);
-      margin-bottom: 0.5rem;
+    .blog-sidebar {
+      border-right: 1px solid rgba(201, 167, 255, 0.5);
+      padding: 1.5rem;
+      z-index: 1;
     }
 
-    .empty-state p {
+    .aperture-mark {
+      width: 86px;
+      height: 86px;
+      border: 1px solid rgba(201, 167, 255, 0.7);
+      display: grid;
+      place-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .aperture-mark svg {
+      width: 60px;
+      height: 60px;
+      fill: var(--purple);
+      filter: drop-shadow(0 0 10px rgba(217, 194, 255, 0.7));
+    }
+
+    .blog-sidebar h3 {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--purple);
+      margin-bottom: 1rem;
+    }
+
+    .blog-date-link {
+      display: block;
+      text-decoration: none;
+      width: 100%;
+      background: transparent;
+      border: 0;
+      border-left: 2px solid transparent;
+      color: rgba(230, 215, 255, 0.7);
+      font-family: var(--font-mono);
       font-size: 0.85rem;
-      color: var(--text-muted);
-      max-width: 320px;
+      text-align: left;
+      padding: 0.55rem 0.7rem;
+      cursor: pointer;
     }
 
-    /* ─── Credentials Panel ─── */
+    .blog-date-link:hover,
+    .blog-date-link.active {
+      color: #ffffff;
+      border-left-color: var(--purple);
+      background: rgba(217, 194, 255, 0.12);
+    }
+
+    .blog-reader {
+      position: relative;
+      z-index: 1;
+      padding: 3rem;
+      color: #f4eaff;
+    }
+
+    .blog-screen-glow {
+      position: absolute;
+      inset: 15%;
+      background: rgba(177, 111, 255, 0.18);
+      filter: blur(70px);
+      z-index: -1;
+    }
+
+    .blog-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--purple);
+      letter-spacing: 0.12em;
+      margin-bottom: 2rem;
+    }
+
+    .blog-reader h2 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 300;
+      color: #ffffff;
+      margin-bottom: 0.4rem;
+    }
+
+    .blog-date {
+      font-family: var(--font-mono);
+      color: var(--purple-mid);
+      margin-bottom: 1.8rem;
+    }
+
+    .blog-reader p {
+      font-family: var(--font-mono);
+      max-width: 720px;
+      line-height: 1.8;
+      color: rgba(244, 234, 255, 0.85);
+      min-height: 170px;
+    }
+
+    .blog-cursor {
+      display: inline-block;
+      width: 0.6em;
+      height: 1.1em;
+      margin-left: 0.2em;
+      background: var(--purple);
+      vertical-align: -0.15em;
+      animation: blink 1s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      0%, 45% { opacity: 1; }
+      46%, 100% { opacity: 0; }
+    }
+
+    .blog-pagination {
+      display: flex;
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+
+    .blog-pagination button {
+      border: 1px solid rgba(201, 167, 255, 0.7);
+      background: rgba(201, 167, 255, 0.08);
+      color: #eadcff;
+      font-family: var(--font-mono);
+      padding: 0.65rem 1rem;
+      cursor: pointer;
+    }
+
+    .blog-pagination button:hover { background: rgba(201, 167, 255, 0.2); }
+    .blog-pagination button:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    /* Credentials */
     .credentials-list {
       display: flex;
       flex-direction: column;
@@ -503,15 +475,10 @@
       grid-template-columns: 80px 1fr;
       gap: 1.5rem;
       padding: 1.5rem;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 4px;
       transition: border-color 0.3s ease;
     }
 
-    .credential-item:hover {
-      border-color: var(--border-light);
-    }
+    .credential-item:hover { border-color: var(--border-light); }
 
     .credential-year {
       font-family: var(--font-mono);
@@ -553,91 +520,10 @@
       margin-top: 0.6rem;
     }
 
-    /* ─── Contact Panel ─── */
-    .contact-section {
-      max-width: 540px;
-    }
-
-    .contact-section h2 {
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      font-weight: 300;
-      font-style: italic;
-      color: var(--text-primary);
-      margin-bottom: 1rem;
-    }
-
+    /* PC Builds */
+    .pcbuilds-section > p,
+    .mathgame-section > p,
     .contact-section > p {
-      color: var(--text-secondary);
-      font-size: 0.92rem;
-      margin-bottom: 2.5rem;
-    }
-
-    .contact-row {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1.2rem 1.5rem;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      margin-bottom: 1rem;
-      transition: border-color 0.3s ease, background 0.3s ease;
-    }
-
-    .contact-row:hover {
-      border-color: var(--border-light);
-      background: var(--bg-elevated);
-    }
-
-    .contact-row svg {
-      width: 20px;
-      height: 20px;
-      stroke: var(--accent-dim);
-      fill: none;
-      stroke-width: 1.5;
-      flex-shrink: 0;
-    }
-
-    .contact-row .contact-label {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 0.15rem;
-    }
-
-    .contact-row .contact-value {
-      font-size: 0.92rem;
-      color: var(--text-primary);
-    }
-
-    .contact-row a {
-      color: var(--accent);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-
-    .contact-row a:hover {
-      color: var(--text-primary);
-    }
-
-    /* ─── PC Builds & Linux Ricing Panel ─── */
-    .pcbuilds-section {
-      max-width: 100%;
-    }
-
-    .pcbuilds-section > h2 {
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      font-weight: 300;
-      font-style: italic;
-      color: var(--text-primary);
-      margin-bottom: 1rem;
-    }
-
-    .pcbuilds-section > p {
       color: var(--text-secondary);
       font-size: 0.92rem;
       margin-bottom: 2.5rem;
@@ -652,20 +538,13 @@
     }
 
     .package-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 4px;
       padding: 2rem 1.5rem;
       transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
       display: flex;
       flex-direction: column;
     }
 
-    .package-card:hover {
-      border-color: var(--border-light);
-      background: var(--bg-elevated);
-      transform: translateY(-2px);
-    }
+    .package-card:hover { transform: translateY(-2px); }
 
     .package-card.featured {
       border-color: var(--accent-dim);
@@ -741,9 +620,7 @@
       font-family: var(--font-mono);
     }
 
-    .inquiry-section {
-      margin-top: 1rem;
-    }
+    .inquiry-section { margin-top: 1rem; }
 
     .inquiry-btn {
       display: inline-flex;
@@ -806,50 +683,24 @@
       font-weight: 400;
     }
 
-    .inquiry-contact a {
+    .inquiry-contact a,
+    .contact-row a {
       color: var(--accent);
       text-decoration: none;
       transition: color 0.2s ease;
     }
 
-    .inquiry-contact a:hover {
+    .inquiry-contact a:hover,
+    .contact-row a:hover {
       color: var(--text-primary);
     }
 
-    /* ─── Math Game Panel ─── */
+    /* Math Game */
     .mathgame-section { max-width: 640px; }
-    .mathgame-section > h2 {
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      font-weight: 300;
-      font-style: italic;
-      color: var(--text-primary);
-      margin-bottom: 1rem;
-    }
-    .mathgame-section > p {
-      color: var(--text-secondary);
-      font-size: 0.92rem;
-      margin-bottom: 2.5rem;
-      max-width: 640px;
-    }
 
     .mg-screen { animation: fadeIn 0.5s ease; }
 
-    .mg-label {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent-dim);
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-
     .mg-name-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 4px;
       padding: 2rem;
       margin-bottom: 2.5rem;
     }
@@ -867,6 +718,7 @@
       transition: border-color 0.3s ease;
       margin-bottom: 1.25rem;
     }
+
     .mg-input:focus { border-color: var(--accent-dim); }
     .mg-input::placeholder { color: var(--text-muted); }
 
@@ -883,50 +735,42 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
+
     .mg-btn:hover { border-color: var(--border-light); background: var(--bg-elevated); }
+
     .mg-btn-primary {
       border-color: var(--accent-dim);
       color: var(--accent);
     }
+
     .mg-btn-primary:hover {
       background: var(--bg-elevated);
       border-color: var(--accent);
     }
 
-    /* HUD */
     .mg-hud {
       display: flex;
       gap: 1.5rem;
       margin-bottom: 2.5rem;
     }
+
     .mg-hud-item {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 4px;
       padding: 1rem 1.5rem;
       flex: 1;
       text-align: center;
     }
-    .mg-hud-label {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent-dim);
-      display: block;
-      margin-bottom: 0.4rem;
-    }
+
     .mg-hud-value {
       font-family: var(--font-display);
       font-size: 2rem;
       font-weight: 300;
       color: var(--text-primary);
     }
+
     .mg-hud-value.mg-timer-low { color: #c45a5a; }
 
-    /* Problem area */
     .mg-problem-area { text-align: center; }
+
     .mg-problem {
       font-family: var(--font-display);
       font-size: 3rem;
@@ -938,6 +782,7 @@
       align-items: center;
       justify-content: center;
     }
+
     .mg-answer-input {
       width: 200px;
       background: var(--bg-surface);
@@ -953,9 +798,15 @@
       transition: border-color 0.3s ease;
       -moz-appearance: textfield;
     }
+
     .mg-answer-input::-webkit-outer-spin-button,
-    .mg-answer-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .mg-answer-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
     .mg-answer-input:focus { border-color: var(--accent-dim); }
+
     .mg-feedback {
       font-family: var(--font-mono);
       font-size: 0.75rem;
@@ -963,27 +814,28 @@
       min-height: 1.2rem;
       letter-spacing: 0.05em;
     }
+
     .mg-feedback.correct { color: #6ec47a; }
     .mg-feedback.wrong { color: #c45a5a; }
 
-    /* Results */
     .mg-results-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 4px;
       padding: 2.5rem 2rem;
       text-align: center;
       margin-bottom: 2.5rem;
     }
-    .mg-results-card h3 {
+
+    .mg-results-card h3,
+    .mg-leaderboard-section h3 {
       font-family: var(--font-display);
       font-size: 1.5rem;
       font-weight: 300;
       font-style: italic;
       color: var(--text-secondary);
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
+
     .mg-final-score { margin-bottom: 1.5rem; }
+
     .mg-big-number {
       font-family: var(--font-display);
       font-size: 4rem;
@@ -992,23 +844,27 @@
       display: block;
       line-height: 1.1;
     }
+
     .mg-stats-row {
       display: flex;
       gap: 1.5rem;
       justify-content: center;
       margin-bottom: 2rem;
     }
+
     .mg-stat {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
+
     .mg-stat span:last-child {
       font-family: var(--font-display);
       font-size: 1.5rem;
       font-weight: 300;
       color: var(--text-primary);
     }
+
     .mg-submit-status {
       font-family: var(--font-mono);
       font-size: 0.72rem;
@@ -1017,27 +873,16 @@
       min-height: 1rem;
     }
 
-    /* Leaderboard */
-    .mg-leaderboard-section h3 {
-      font-family: var(--font-display);
-      font-size: 1.3rem;
-      font-weight: 300;
-      font-style: italic;
-      color: var(--text-secondary);
-      margin-bottom: 1rem;
-    }
-    .mg-leaderboard {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .mg-loading {
+    .mg-leaderboard { overflow: hidden; }
+
+    .mg-loading,
+    .mg-lb-empty {
       padding: 1.5rem;
       text-align: center;
       font-size: 0.85rem;
       color: var(--text-muted);
     }
+
     .mg-lb-row {
       display: grid;
       grid-template-columns: 40px 1fr auto;
@@ -1047,33 +892,66 @@
       align-items: center;
       transition: background 0.2s ease;
     }
+
     .mg-lb-row:last-child { border-bottom: none; }
     .mg-lb-row:hover { background: var(--bg-elevated); }
     .mg-lb-row.mg-lb-highlight { background: var(--accent-glow); }
+
     .mg-lb-rank {
       font-family: var(--font-mono);
       font-size: 0.75rem;
       color: var(--accent-dim);
       text-align: center;
     }
+
     .mg-lb-rank.mg-top-3 { color: var(--accent); }
+
     .mg-lb-name {
       font-size: 0.9rem;
       color: var(--text-primary);
     }
+
     .mg-lb-score {
       font-family: var(--font-mono);
       font-size: 0.85rem;
       color: var(--accent);
     }
-    .mg-lb-empty {
-      padding: 2rem;
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--text-muted);
+
+    /* Contact */
+    .contact-section { max-width: 540px; }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.3s ease, background 0.3s ease;
     }
 
-    /* ─── Footer ─── */
+    .contact-row svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--accent-dim);
+      fill: none;
+      stroke-width: 1.5;
+      flex-shrink: 0;
+    }
+
+    .contact-row .contact-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.15rem;
+    }
+
+    .contact-row .contact-value {
+      font-size: 0.92rem;
+      color: var(--text-primary);
+    }
+
     footer {
       padding: 2rem 0;
       border-top: 1px solid var(--border);
@@ -1087,7 +965,16 @@
       letter-spacing: 0.1em;
     }
 
-    /* ─── Responsive ─── */
+    @media (max-width: 700px) {
+      .blog-terminal { grid-template-columns: 1fr; }
+      .blog-sidebar {
+        border-right: 0;
+        border-bottom: 1px solid rgba(201, 167, 255, 0.5);
+      }
+      .blog-reader { padding: 2rem; }
+      .blog-meta { flex-direction: column; }
+    }
+
     @media (max-width: 600px) {
       .container { padding: 0 1.2rem; }
       header { padding: 2.5rem 0 1.5rem; }
@@ -1099,15 +986,15 @@
       .math-decoration { padding: 1.2rem 1.5rem; }
       .math-decoration .formula { font-size: 1.2rem; }
       .packages-grid { grid-template-columns: 1fr; }
-      .tabs { flex-wrap: wrap; }
+      .mg-hud { flex-direction: column; gap: 1rem; }
+      .mg-stats-row { flex-direction: column; gap: 1rem; }
+      .mg-problem { font-size: 2.2rem; }
     }
   </style>
 </head>
+
 <body>
-
   <div class="container">
-
-    <!-- Header -->
     <header>
       <div class="header-top">
         <h1 class="name">Prayash <span>Thapa</span></h1>
@@ -1115,7 +1002,6 @@
       </div>
     </header>
 
-    <!-- Navigation -->
     <nav>
       <ul class="tabs">
         <li><button class="tab-btn active" data-tab="main">Main</button></li>
@@ -1127,10 +1013,7 @@
       </ul>
     </nav>
 
-    <!-- Tab Panels -->
     <div class="tab-content">
-
-      <!-- Main / About -->
       <div id="main" class="panel active">
         <div class="about-grid">
           <div class="about-intro">
@@ -1139,10 +1022,11 @@
               My name is <strong>Prayash Thapa</strong>. I am an 18-year-old high school senior with a deep curiosity for the structures that run our world &mdash; from the elegance of pure mathematics to the logic of a chess game.
             </p>
             <p>
-              I spend my time writing <strong> playing chess</strong> and <strong>playing around with Python</strong>, drawn to the precision they demand and the problems they let me solve. Problems are a daily part of my life &mdash; a way to give abstract ideas a concrete form.
+              I spend my time <strong>playing chess</strong> and <strong>playing around with Python</strong>, drawn to the precision they demand and the problems they let me solve. Problems are a daily part of my life &mdash; a way to give abstract ideas a concrete form.
             </p>
             <p>
               This fall, I will be attending the <strong>Rochester Institute of Technology</strong> to study <strong>Applied Mathematics</strong>, where I plan to explore more rigorous theory-based mathematics.
+            </p>
           </div>
 
           <div class="detail-cards">
@@ -1171,55 +1055,45 @@
         </div>
       </div>
 
-      <!-- Blog -->
-<!-- Blog -->
-<div id="blog" class="panel">
-  <div class="blog-terminal">
-    <aside class="blog-sidebar">
-      <div class="aperture-mark">
-        <svg viewBox="0 0 100 100">
-          <path d="M50 5 L72 43 H50 Z"/>
-          <path d="M72 43 L95 43 L65 65 Z"/>
-          <path d="M65 65 L76 95 L45 74 Z"/>
-          <path d="M45 74 L25 95 L31 57 Z"/>
-          <path d="M31 57 L5 57 L35 35 Z"/>
-          <path d="M35 35 L24 5 L55 26 Z"/>
-        </svg>
+      <div id="blog" class="panel">
+        <div class="blog-terminal">
+          <aside class="blog-sidebar">
+            <div class="aperture-mark" aria-label="Aperture-style mark">
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <path d="M50 5 L72 43 H50 Z"></path>
+                <path d="M72 43 L95 43 L65 65 Z"></path>
+                <path d="M65 65 L76 95 L45 74 Z"></path>
+                <path d="M45 74 L25 95 L31 57 Z"></path>
+                <path d="M31 57 L5 57 L35 35 Z"></path>
+                <path d="M35 35 L24 5 L55 26 Z"></path>
+              </svg>
+            </div>
+
+            <h3>ARCHIVE</h3>
+
+            <a class="blog-date-link active" href="blog-2026-04-27.html">04.27.2026</a>
+            <a class="blog-date-link" href="blog-2026-04-14.html">04.14.2026</a>
+            <a class="blog-date-link" href="blog-2026-03-29.html">03.29.2026</a>
+          </aside>
+
+          <main class="blog-reader">
+            <div class="blog-screen-glow"></div>
+
+            <div class="blog-meta">
+              <span>ARCHIVE INDEX</span>
+              <span>APERTURE PERSONAL LOG</span>
+            </div>
+
+            <h2>Blog Archive</h2>
+            <div class="blog-date">Select a date from the archive.</div>
+
+            <p>
+              <span id="blog-body">Click one of the dated logs on the left. Each one opens as its own full terminal-style page.</span><span class="blog-cursor"></span>
+            </p>
+          </main>
+        </div>
       </div>
 
-      <h3>ARCHIVE</h3>
-
-      <button class="blog-date-link active" data-blog="0">04.27.2026</button>
-      <button class="blog-date-link" data-blog="1">04.14.2026</button>
-      <button class="blog-date-link" data-blog="2">03.29.2026</button>
-    </aside>
-
-    <main class="blog-reader">
-      <div class="blog-screen-glow"></div>
-
-      <div class="blog-meta">
-        <span id="blog-page-label">PAGE 1 / 3</span>
-        <span>APERTURE PERSONAL LOG</span>
-      </div>
-
-      <h2 id="blog-title">Test Subject Notes</h2>
-      <div id="blog-date" class="blog-date">04.27.2026</div>
-
-      <p id="blog-body">
-        Today I tried to write something intelligent and immediately failed. Good. That means there is room to improve.
-        This is placeholder blog text for now. Eventually this can become math notes, project updates, thoughts on RIT,
-        programming logs, or whatever strange garbage deserves to survive on the internet.
-      </p>
-
-      <div class="blog-pagination">
-        <button id="blog-prev">← PAGE 1</button>
-        <button id="blog-next">PAGE 2 →</button>
-      </div>
-    </main>
-  </div>
-</div>
-
-      <!-- Credentials -->
       <div id="credentials" class="panel">
         <div class="credentials-list">
           <div class="credential-item">
@@ -1231,6 +1105,7 @@
               <span class="credential-badge">Upcoming</span>
             </div>
           </div>
+
           <div class="credential-item">
             <div class="credential-year">2026</div>
             <div class="credential-info">
@@ -1242,25 +1117,23 @@
         </div>
       </div>
 
-      <!-- PC Builds & Linux Ricing -->
       <div id="pcbuilds" class="panel">
         <div class="pcbuilds-section">
           <h2>PC Builds &amp; Linux Ricing</h2>
           <p>Custom personal computer builds and Linux desktop configuration &mdash; from minimal tiling setups to fully themed environments. Each package includes hardware guidance, OS installation, and a hand-crafted desktop experience.</p>
 
           <div class="packages-grid">
-
             <div class="package-card">
               <div class="package-tier">Starter</div>
               <div class="package-price">$30</div>
               <h4>Clean Slate</h4>
               <p class="package-desc">A minimal, functional Linux setup for everyday use. Perfect for someone new to Linux or wanting a clean daily driver.</p>
               <ul class="package-features">
-                <li>Distro selection &amp; installation (Ubuntu, Fedora, or Mint)</li>
-                <li>Lightweight window manager (i3 or Sway) with sane defaults</li>
-                <li>Terminal emulator theming (Alacritty/Kitty)</li>
-                <li>Shell config (Zsh + Oh My Zsh or Starship prompt)</li>
-                <li>Basic dotfiles &amp; a clean GTK theme</li>
+                <li>Distro selection &amp; installation</li>
+                <li>Lightweight window manager with sane defaults</li>
+                <li>Terminal emulator theming</li>
+                <li>Shell config</li>
+                <li>Basic dotfiles &amp; GTK theme</li>
                 <li>One round of revisions</li>
               </ul>
             </div>
@@ -1272,12 +1145,12 @@
               <p class="package-desc">A fully themed desktop environment with custom color schemes, widgets, and a cohesive aesthetic across every application.</p>
               <ul class="package-features">
                 <li>Everything in Clean Slate</li>
-                <li>Advanced WM config (Hyprland, AwesomeWM, or bspwm)</li>
-                <li>Custom color palette &amp; unified theming</li>
-                <li>Status bar setup (Waybar, Polybar, or eww)</li>
-                <li>Notification daemon &amp; app launcher styling</li>
+                <li>Advanced WM config</li>
+                <li>Custom color palette</li>
+                <li>Status bar setup</li>
+                <li>Notification daemon &amp; launcher styling</li>
                 <li>Neovim or Emacs configuration</li>
-                <li>Picom/compositor effects &amp; wallpaper rotation</li>
+                <li>Compositor effects &amp; wallpaper rotation</li>
                 <li>Two rounds of revisions</li>
               </ul>
             </div>
@@ -1289,24 +1162,23 @@
               <p class="package-desc">End-to-end: hardware part list consultation, full OS install, and a magazine-worthy rice. The complete package for enthusiasts.</p>
               <ul class="package-features">
                 <li>Everything in Full Rice</li>
-                <li>Hardware part list consultation for your budget</li>
-                <li>Arch or Gentoo install with custom kernel flags</li>
+                <li>Hardware part list consultation</li>
+                <li>Arch or Gentoo install</li>
                 <li>Multi-monitor &amp; GPU passthrough setup</li>
-                <li>Custom scripts &amp; automation (backup, screenshots, etc.)</li>
-                <li>Login manager (SDDM/Ly) theming</li>
+                <li>Custom scripts &amp; automation</li>
+                <li>Login manager theming</li>
                 <li>GRUB bootloader theme</li>
                 <li>Full dotfiles repo with documentation</li>
                 <li>Unlimited revisions for 30 days</li>
               </ul>
             </div>
-
           </div>
 
           <div class="inquiry-section">
-            <button class="inquiry-btn" onclick="document.getElementById('inquiry-info').classList.toggle('visible')">
-              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            <button class="inquiry-btn" id="inquiry-toggle" type="button">
               Professional Inquiries
             </button>
+
             <div id="inquiry-info" class="inquiry-details">
               <p>For serious personal inquiries about PC builds and Linux ricing services:</p>
               <div class="inquiry-contact">
@@ -1317,74 +1189,17 @@
           </div>
         </div>
       </div>
-const blogPosts = [
-  {
-    title: "Test Subject Notes",
-    date: "04.27.2026",
-    body: "Today I tried to write something intelligent and immediately failed. Good. That means there is room to improve. This is placeholder blog text for now. Eventually this can become math notes, project updates, thoughts on RIT, programming logs, or whatever strange garbage deserves to survive on the internet."
-  },
-  {
-    title: "Purple Terminal Experiment",
-    date: "04.14.2026",
-    body: "The interface is not finished. The writing is not finished. The point is not to look polished yet. The point is to build the machine, then make it sharper until it stops embarrassing me."
-  },
-  {
-    title: "Page Three Placeholder",
-    date: "03.29.2026",
-    body: "This is mock blog entry three. Nothing here has to make sense yet. It only needs to prove that the archive, date links, and page navigation work correctly."
-  }
-];
 
-let currentBlogIndex = 0;
-
-function renderBlog(index) {
-  currentBlogIndex = index;
-
-  document.getElementById("blog-title").textContent = blogPosts[index].title;
-  document.getElementById("blog-date").textContent = blogPosts[index].date;
-  document.getElementById("blog-body").textContent = blogPosts[index].body;
-  document.getElementById("blog-page-label").textContent = `PAGE ${index + 1} / ${blogPosts.length}`;
-
-  document.querySelectorAll(".blog-date-link").forEach((btn, i) => {
-    btn.classList.toggle("active", i === index);
-  });
-
-  document.getElementById("blog-prev").textContent =
-    index === 0 ? "← PAGE 1" : `← PAGE ${index}`;
-
-  document.getElementById("blog-next").textContent =
-    index === blogPosts.length - 1 ? `PAGE ${blogPosts.length} →` : `PAGE ${index + 2} →`;
-}
-
-document.querySelectorAll(".blog-date-link").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    renderBlog(Number(btn.dataset.blog));
-  });
-});
-
-document.getElementById("blog-prev").addEventListener("click", () => {
-  if (currentBlogIndex > 0) {
-    renderBlog(currentBlogIndex - 1);
-  }
-});
-
-document.getElementById("blog-next").addEventListener("click", () => {
-  if (currentBlogIndex < blogPosts.length - 1) {
-    renderBlog(currentBlogIndex + 1);
-  }
-});
-      <!-- Math Game -->
       <div id="mathgame" class="panel">
         <div class="mathgame-section">
           <h2>Zetamac Challenge</h2>
           <p>Race against the clock solving arithmetic problems. How many can you get right in 60 seconds?</p>
 
-          <!-- Name Input Screen -->
           <div id="mg-name-screen" class="mg-screen">
             <div class="mg-name-card">
               <label class="mg-label" for="mg-player-name">Enter your name</label>
-              <input type="text" id="mg-player-name" class="mg-input" maxlength="20" placeholder="Your name..." autocomplete="off">
-              <button id="mg-start-btn" class="mg-btn mg-btn-primary">Start Game</button>
+              <input type="text" id="mg-player-name" class="mg-input" maxlength="20" placeholder="Your name..." autocomplete="off" />
+              <button id="mg-start-btn" class="mg-btn mg-btn-primary" type="button">Start Game</button>
             </div>
 
             <div class="mg-leaderboard-section">
@@ -1395,7 +1210,6 @@ document.getElementById("blog-next").addEventListener("click", () => {
             </div>
           </div>
 
-          <!-- Game Screen -->
           <div id="mg-game-screen" class="mg-screen" style="display:none;">
             <div class="mg-hud">
               <div class="mg-hud-item">
@@ -1414,12 +1228,11 @@ document.getElementById("blog-next").addEventListener("click", () => {
 
             <div class="mg-problem-area">
               <div id="mg-problem" class="mg-problem"></div>
-              <input type="number" id="mg-answer" class="mg-answer-input" autocomplete="off" inputmode="numeric">
+              <input type="number" id="mg-answer" class="mg-answer-input" autocomplete="off" inputmode="numeric" />
               <div id="mg-feedback" class="mg-feedback"></div>
             </div>
           </div>
 
-          <!-- Results Screen -->
           <div id="mg-results-screen" class="mg-screen" style="display:none;">
             <div class="mg-results-card">
               <h3>Time's Up!</h3>
@@ -1427,6 +1240,7 @@ document.getElementById("blog-next").addEventListener("click", () => {
                 <span class="mg-label">Final Score</span>
                 <span id="mg-final-score-value" class="mg-big-number">0</span>
               </div>
+
               <div class="mg-stats-row">
                 <div class="mg-stat">
                   <span class="mg-label">Correct</span>
@@ -1441,8 +1255,9 @@ document.getElementById("blog-next").addEventListener("click", () => {
                   <span id="mg-stat-streak">0</span>
                 </div>
               </div>
+
               <div id="mg-submit-status" class="mg-submit-status"></div>
-              <button id="mg-play-again" class="mg-btn mg-btn-primary">Play Again</button>
+              <button id="mg-play-again" class="mg-btn mg-btn-primary" type="button">Play Again</button>
             </div>
 
             <div class="mg-leaderboard-section">
@@ -1455,14 +1270,13 @@ document.getElementById("blog-next").addEventListener("click", () => {
         </div>
       </div>
 
-      <!-- Contact -->
       <div id="contact" class="panel">
         <div class="contact-section">
           <h2>Get in touch</h2>
           <p>Feel free to reach out for collaborations, questions, or just to talk math.</p>
 
           <div class="contact-row">
-            <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/></svg>
+            <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M22 4l-10 8L2 4"></path></svg>
             <div>
               <div class="contact-label">Email</div>
               <div class="contact-value"><a href="mailto:prayashthapa2007@gmail.com">prayashthapa2007@gmail.com</a></div>
@@ -1470,14 +1284,11 @@ document.getElementById("blog-next").addEventListener("click", () => {
           </div>
         </div>
       </div>
-
     </div>
 
-    <!-- Footer -->
     <footer>
       <p>&copy; 2026 Prayash Thapa</p>
     </footer>
-
   </div>
 
   <script>
@@ -1490,257 +1301,265 @@ document.getElementById("blog-next").addEventListener("click", () => {
         panels.forEach(p => p.classList.remove('active'));
         btn.classList.add('active');
         document.getElementById(btn.dataset.tab).classList.add('active');
+
+        if (btn.dataset.tab === 'mathgame') {
+          loadLeaderboard(document.getElementById('mg-leaderboard'));
+        }
       });
     });
-    // ─── Zetamac Math Game ───
-    (function() {
-      const GAME_DURATION = 60;
-      let playerName = '';
-      let score = 0;
-      let correct = 0;
-      let wrong = 0;
-      let streak = 0;
-      let bestStreak = 0;
-      let timeLeft = GAME_DURATION;
-      let timerInterval = null;
-      let currentAnswer = 0;
 
-      const nameScreen = document.getElementById('mg-name-screen');
-      const gameScreen = document.getElementById('mg-game-screen');
-      const resultsScreen = document.getElementById('mg-results-screen');
-      const nameInput = document.getElementById('mg-player-name');
-      const startBtn = document.getElementById('mg-start-btn');
-      const timerEl = document.getElementById('mg-timer');
-      const scoreEl = document.getElementById('mg-score');
-      const streakEl = document.getElementById('mg-streak');
-      const problemEl = document.getElementById('mg-problem');
-      const answerInput = document.getElementById('mg-answer');
-      const feedbackEl = document.getElementById('mg-feedback');
-      const finalScoreEl = document.getElementById('mg-final-score-value');
-      const statCorrectEl = document.getElementById('mg-stat-correct');
-      const statWrongEl = document.getElementById('mg-stat-wrong');
-      const statStreakEl = document.getElementById('mg-stat-streak');
-      const submitStatusEl = document.getElementById('mg-submit-status');
-      const playAgainBtn = document.getElementById('mg-play-again');
+    // Blog archive now links to standalone blog pages.
 
-      function randInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+    // Inquiry toggle
+    document.getElementById('inquiry-toggle').addEventListener('click', () => {
+      document.getElementById('inquiry-info').classList.toggle('visible');
+    });
+
+    // Zetamac Math Game
+    const GAME_DURATION = 60;
+    let playerName = '';
+    let score = 0;
+    let correct = 0;
+    let wrong = 0;
+    let streak = 0;
+    let bestStreak = 0;
+    let timeLeft = GAME_DURATION;
+    let timerInterval = null;
+    let currentAnswer = 0;
+
+    const nameScreen = document.getElementById('mg-name-screen');
+    const gameScreen = document.getElementById('mg-game-screen');
+    const resultsScreen = document.getElementById('mg-results-screen');
+    const nameInput = document.getElementById('mg-player-name');
+    const startBtn = document.getElementById('mg-start-btn');
+    const timerEl = document.getElementById('mg-timer');
+    const scoreEl = document.getElementById('mg-score');
+    const streakEl = document.getElementById('mg-streak');
+    const problemEl = document.getElementById('mg-problem');
+    const answerInput = document.getElementById('mg-answer');
+    const feedbackEl = document.getElementById('mg-feedback');
+    const finalScoreEl = document.getElementById('mg-final-score-value');
+    const statCorrectEl = document.getElementById('mg-stat-correct');
+    const statWrongEl = document.getElementById('mg-stat-wrong');
+    const statStreakEl = document.getElementById('mg-stat-streak');
+    const submitStatusEl = document.getElementById('mg-submit-status');
+    const playAgainBtn = document.getElementById('mg-play-again');
+
+    function randInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function generateProblem() {
+      const ops = ['+', '−', '×', '÷'];
+      const op = ops[randInt(0, 3)];
+      let a, b, answer;
+      const difficulty = randInt(1, 3);
+
+      switch(op) {
+        case '+':
+          if (difficulty === 1) { a = randInt(1, 20); b = randInt(1, 20); }
+          else if (difficulty === 2) { a = randInt(10, 100); b = randInt(10, 100); }
+          else { a = randInt(50, 500); b = randInt(50, 500); }
+          answer = a + b;
+          break;
+        case '−':
+          if (difficulty === 1) { a = randInt(1, 20); b = randInt(1, a); }
+          else if (difficulty === 2) { a = randInt(20, 100); b = randInt(1, a); }
+          else { a = randInt(100, 500); b = randInt(1, a); }
+          answer = a - b;
+          break;
+        case '×':
+          if (difficulty === 1) { a = randInt(2, 10); b = randInt(2, 10); }
+          else if (difficulty === 2) { a = randInt(2, 12); b = randInt(10, 30); }
+          else { a = randInt(10, 25); b = randInt(10, 25); }
+          answer = a * b;
+          break;
+        case '÷':
+          if (difficulty === 1) { b = randInt(2, 10); answer = randInt(1, 10); }
+          else if (difficulty === 2) { b = randInt(2, 12); answer = randInt(5, 25); }
+          else { b = randInt(5, 20); answer = randInt(10, 50); }
+          a = b * answer;
+          break;
       }
 
-      function generateProblem() {
-        const ops = ['+', '−', '×', '÷'];
-        const op = ops[randInt(0, 3)];
-        let a, b, answer;
-        const difficulty = randInt(1, 3); // 1=easy, 2=medium, 3=hard
+      currentAnswer = answer;
+      problemEl.textContent = a + ' ' + op + ' ' + b + ' = ?';
+    }
 
-        switch(op) {
-          case '+':
-            if (difficulty === 1) { a = randInt(1, 20); b = randInt(1, 20); }
-            else if (difficulty === 2) { a = randInt(10, 100); b = randInt(10, 100); }
-            else { a = randInt(50, 500); b = randInt(50, 500); }
-            answer = a + b;
-            break;
-          case '−':
-            if (difficulty === 1) { a = randInt(1, 20); b = randInt(1, a); }
-            else if (difficulty === 2) { a = randInt(20, 100); b = randInt(1, a); }
-            else { a = randInt(100, 500); b = randInt(1, a); }
-            answer = a - b;
-            break;
-          case '×':
-            if (difficulty === 1) { a = randInt(2, 10); b = randInt(2, 10); }
-            else if (difficulty === 2) { a = randInt(2, 12); b = randInt(10, 30); }
-            else { a = randInt(10, 25); b = randInt(10, 25); }
-            answer = a * b;
-            break;
-          case '÷':
-            if (difficulty === 1) { b = randInt(2, 10); answer = randInt(1, 10); }
-            else if (difficulty === 2) { b = randInt(2, 12); answer = randInt(5, 25); }
-            else { b = randInt(5, 20); answer = randInt(10, 50); }
-            a = b * answer;
-            break;
-        }
+    function showScreen(screen) {
+      [nameScreen, gameScreen, resultsScreen].forEach(s => s.style.display = 'none');
+      screen.style.display = 'block';
+    }
 
-        currentAnswer = answer;
-        problemEl.textContent = a + ' ' + op + ' ' + b + ' = ?';
+    function startGame() {
+      const name = nameInput.value.trim();
+      if (!name) {
+        nameInput.focus();
+        return;
       }
 
-      function showScreen(screen) {
-        [nameScreen, gameScreen, resultsScreen].forEach(s => s.style.display = 'none');
-        screen.style.display = 'block';
-      }
+      playerName = name;
+      score = 0;
+      correct = 0;
+      wrong = 0;
+      streak = 0;
+      bestStreak = 0;
+      timeLeft = GAME_DURATION;
 
-      function startGame() {
-        const name = nameInput.value.trim();
-        if (!name) { nameInput.focus(); return; }
-        playerName = name;
-        score = 0; correct = 0; wrong = 0; streak = 0; bestStreak = 0;
-        timeLeft = GAME_DURATION;
-        scoreEl.textContent = '0';
-        streakEl.textContent = '0';
+      scoreEl.textContent = '0';
+      streakEl.textContent = '0';
+      timerEl.textContent = timeLeft;
+      timerEl.classList.remove('mg-timer-low');
+      feedbackEl.textContent = '';
+      feedbackEl.className = 'mg-feedback';
+
+      showScreen(gameScreen);
+      generateProblem();
+      answerInput.value = '';
+      answerInput.focus();
+
+      timerInterval = setInterval(() => {
+        timeLeft--;
         timerEl.textContent = timeLeft;
-        timerEl.classList.remove('mg-timer-low');
-        feedbackEl.textContent = '';
-        feedbackEl.className = 'mg-feedback';
+        if (timeLeft <= 10) timerEl.classList.add('mg-timer-low');
+        if (timeLeft <= 0) endGame();
+      }, 1000);
+    }
 
-        showScreen(gameScreen);
-        generateProblem();
-        answerInput.value = '';
-        answerInput.focus();
+    function endGame() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      finalScoreEl.textContent = score;
+      statCorrectEl.textContent = correct;
+      statWrongEl.textContent = wrong;
+      statStreakEl.textContent = bestStreak;
+      submitStatusEl.textContent = 'Submitting score...';
+      showScreen(resultsScreen);
+      submitScore();
+    }
 
-        timerInterval = setInterval(() => {
-          timeLeft--;
-          timerEl.textContent = timeLeft;
-          if (timeLeft <= 10) timerEl.classList.add('mg-timer-low');
-          if (timeLeft <= 0) endGame();
-        }, 1000);
-      }
+    async function submitScore() {
+      try {
+        const res = await fetch('/api/leaderboard', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: playerName, score })
+        });
 
-      function endGame() {
-        clearInterval(timerInterval);
-        timerInterval = null;
-        finalScoreEl.textContent = score;
-        statCorrectEl.textContent = correct;
-        statWrongEl.textContent = wrong;
-        statStreakEl.textContent = bestStreak;
-        submitStatusEl.textContent = 'Submitting score...';
-        showScreen(resultsScreen);
-        submitScore();
-      }
-
-      async function submitScore() {
-        try {
-          const res = await fetch('/api/leaderboard', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: playerName, score: score })
-          });
-          if (res.ok) {
-            submitStatusEl.textContent = 'Score submitted!';
-            const scores = await res.json();
-            renderLeaderboard(document.getElementById('mg-leaderboard-results'), scores);
-          } else {
-            submitStatusEl.textContent = 'Could not submit score.';
-          }
-        } catch(e) {
+        if (res.ok) {
+          submitStatusEl.textContent = 'Score submitted.';
+          const scores = await res.json();
+          renderLeaderboard(document.getElementById('mg-leaderboard-results'), scores);
+        } else {
           submitStatusEl.textContent = 'Could not submit score.';
         }
+      } catch(e) {
+        submitStatusEl.textContent = 'Could not submit score.';
       }
+    }
 
-      async function loadLeaderboard(container) {
-        try {
-          const res = await fetch('/api/leaderboard');
-          if (res.ok) {
-            const scores = await res.json();
-            renderLeaderboard(container, scores);
-          } else {
-            container.innerHTML = '<div class="mg-lb-empty">Could not load leaderboard.</div>';
-          }
-        } catch(e) {
+    async function loadLeaderboard(container) {
+      try {
+        const res = await fetch('/api/leaderboard');
+
+        if (res.ok) {
+          const scores = await res.json();
+          renderLeaderboard(container, scores);
+        } else {
           container.innerHTML = '<div class="mg-lb-empty">Could not load leaderboard.</div>';
         }
+      } catch(e) {
+        container.innerHTML = '<div class="mg-lb-empty">Could not load leaderboard.</div>';
+      }
+    }
+
+    function renderLeaderboard(container, scores) {
+      if (!scores || scores.length === 0) {
+        container.innerHTML = '<div class="mg-lb-empty">No scores yet. Be the first.</div>';
+        return;
       }
 
-      function renderLeaderboard(container, scores) {
-        if (!scores || scores.length === 0) {
-          container.innerHTML = '<div class="mg-lb-empty">No scores yet. Be the first!</div>';
-          return;
-        }
-        container.innerHTML = scores.map((s, i) => {
-          const isMe = s.name === playerName && s.score === score;
-          return '<div class="mg-lb-row' + (isMe ? ' mg-lb-highlight' : '') + '">' +
-            '<span class="mg-lb-rank' + (i < 3 ? ' mg-top-3' : '') + '">#' + (i + 1) + '</span>' +
-            '<span class="mg-lb-name">' + escapeHtml(s.name) + '</span>' +
-            '<span class="mg-lb-score">' + s.score + '</span>' +
-          '</div>';
-        }).join('');
+      container.innerHTML = scores.map((s, i) => {
+        const isMe = s.name === playerName && s.score === score;
+        return '<div class="mg-lb-row' + (isMe ? ' mg-lb-highlight' : '') + '">' +
+          '<span class="mg-lb-rank' + (i < 3 ? ' mg-top-3' : '') + '">#' + (i + 1) + '</span>' +
+          '<span class="mg-lb-name">' + escapeHtml(s.name) + '</span>' +
+          '<span class="mg-lb-score">' + s.score + '</span>' +
+        '</div>';
+      }).join('');
+    }
+
+    function escapeHtml(str) {
+      const d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    function submitCurrentAnswer() {
+      if (timerInterval === null) return;
+
+      const val = answerInput.value.trim();
+      if (val === '') return;
+
+      const numVal = parseInt(val, 10);
+
+      if (numVal === currentAnswer) {
+        correct++;
+        const pts = playerName.toLowerCase() === 'prayash thapa' ? 2 : 1;
+        score += pts;
+        streak++;
+        if (streak > bestStreak) bestStreak = streak;
+        scoreEl.textContent = score;
+        streakEl.textContent = streak;
+        feedbackEl.textContent = playerName.toLowerCase() === 'prayash thapa' ? 'Correct! (x2)' : 'Correct!';
+        feedbackEl.className = 'mg-feedback correct';
+      } else {
+        wrong++;
+        score -= 2;
+        streak = 0;
+        scoreEl.textContent = score;
+        streakEl.textContent = streak;
+        feedbackEl.textContent = 'Wrong — ' + currentAnswer + ' (−2)';
+        feedbackEl.className = 'mg-feedback wrong';
       }
 
-      function escapeHtml(str) {
-        const d = document.createElement('div');
-        d.textContent = str;
-        return d.innerHTML;
+      answerInput.value = '';
+      generateProblem();
+    }
+
+    answerInput.addEventListener('input', () => {
+      const val = answerInput.value.trim();
+      if (val === '' || timerInterval === null) return;
+
+      const numVal = parseInt(val, 10);
+
+      if (numVal === currentAnswer) {
+        submitCurrentAnswer();
+      } else if (
+        val.length >= String(currentAnswer).length ||
+        (currentAnswer >= 0 && numVal > currentAnswer) ||
+        (val.startsWith('-') && val.length >= String(currentAnswer).length)
+      ) {
+        submitCurrentAnswer();
       }
+    });
 
-      answerInput.addEventListener('input', () => {
-        const val = answerInput.value.trim();
-        if (val === '' || timerInterval === null) return;
+    answerInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submitCurrentAnswer();
+    });
 
-        const numVal = parseInt(val, 10);
-        // Check if the typed number could still be correct (for multi-digit answers)
-        // Submit automatically when the answer is complete
-        if (numVal === currentAnswer) {
-          correct++;
-          const pts = playerName.toLowerCase() === 'prayash thapa' ? 2 : 1;
-          score += pts;
-          streak++;
-          if (streak > bestStreak) bestStreak = streak;
-          scoreEl.textContent = score;
-          streakEl.textContent = streak;
-          feedbackEl.textContent = playerName.toLowerCase() === 'prayash thapa' ? 'Correct! (x2)' : 'Correct!';
-          feedbackEl.className = 'mg-feedback correct';
-          answerInput.value = '';
-          generateProblem();
-        } else if (val.length >= String(currentAnswer).length || (currentAnswer >= 0 && numVal > currentAnswer) || (val.startsWith('-') && val.length >= String(currentAnswer).length)) {
-          // Wrong answer when they've typed enough digits — penalty of 2 points
-          wrong++;
-          score -= 2;
-          streak = 0;
-          scoreEl.textContent = score;
-          streakEl.textContent = streak;
-          feedbackEl.textContent = 'Wrong — ' + currentAnswer + ' (−2)';
-          feedbackEl.className = 'mg-feedback wrong';
-          answerInput.value = '';
-          generateProblem();
-        }
-      });
+    startBtn.addEventListener('click', startGame);
 
-      // Also allow Enter to skip
-      answerInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && timerInterval !== null) {
-          const val = answerInput.value.trim();
-          if (val === '') return;
-          const numVal = parseInt(val, 10);
-          if (numVal === currentAnswer) {
-            correct++;
-            const pts = playerName.toLowerCase() === 'prayash thapa' ? 2 : 1;
-            score += pts;
-            streak++;
-            if (streak > bestStreak) bestStreak = streak;
-            scoreEl.textContent = score;
-            streakEl.textContent = streak;
-            feedbackEl.textContent = playerName.toLowerCase() === 'prayash thapa' ? 'Correct! (x2)' : 'Correct!';
-            feedbackEl.className = 'mg-feedback correct';
-          } else {
-            wrong++;
-            score -= 2;
-            streak = 0;
-            scoreEl.textContent = score;
-            streakEl.textContent = streak;
-            feedbackEl.textContent = 'Wrong — ' + currentAnswer + ' (−2)';
-            feedbackEl.className = 'mg-feedback wrong';
-          }
-          answerInput.value = '';
-          generateProblem();
-        }
-      });
+    nameInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') startGame();
+    });
 
-      startBtn.addEventListener('click', startGame);
-      nameInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') startGame(); });
-      playAgainBtn.addEventListener('click', () => {
-        showScreen(nameScreen);
-        loadLeaderboard(document.getElementById('mg-leaderboard'));
-      });
+    playAgainBtn.addEventListener('click', () => {
+      showScreen(nameScreen);
+      loadLeaderboard(document.getElementById('mg-leaderboard'));
+    });
 
-      // Load leaderboard when tab is activated
-      tabs.forEach(btn => {
-        btn.addEventListener('click', () => {
-          if (btn.dataset.tab === 'mathgame') {
-            loadLeaderboard(document.getElementById('mg-leaderboard'));
-          }
-        });
-      });
-    })();
+    loadLeaderboard(document.getElementById('mg-leaderboard'));
   </script>
-
 </body>
 </html>

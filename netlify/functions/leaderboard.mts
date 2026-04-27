@@ -56,6 +56,25 @@ for (const entry of scores) {
     }
   }
 }
+const merged = new Map();
+
+for (const entry of leaderboard) {
+  const key = entry.name.toLowerCase();
+
+  if (!merged.has(key)) {
+    merged.set(key, entry);
+  } else {
+    const existing = merged.get(key);
+
+    // Keep higher score OR newer timestamp if tie
+    if (
+      entry.score > existing.score ||
+      (entry.score === existing.score && entry.timestamp > existing.timestamp)
+    ) {
+      merged.set(key, entry);
+    }
+  }
+}
 
 const dedupedScores = Array.from(merged.values());
 // --- END BLOCK ---

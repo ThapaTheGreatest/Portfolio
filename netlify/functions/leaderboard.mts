@@ -53,3 +53,26 @@ export const config: Config = {
   path: "/api/leaderboard",
   method: ["GET", "POST"],
 };
+// Merge duplicate names (case-insensitive)
+const merged = new Map();
+
+for (const entry of leaderboard) {
+  const key = entry.name.toLowerCase();
+
+  if (!merged.has(key)) {
+    merged.set(key, entry);
+  } else {
+    const existing = merged.get(key);
+
+    // Keep higher score OR newer timestamp if tie
+    if (
+      entry.score > existing.score ||
+      (entry.score === existing.score && entry.timestamp > existing.timestamp)
+    ) {
+      merged.set(key, entry);
+    }
+  }
+}
+
+// Replace leaderboard with deduplicated version
+const dedupedLeaderboard = Array.from(merged.values());

@@ -37,7 +37,28 @@ export default async (req: Request) => {
       score,
       date: new Date().toISOString(),
     });
+// --- ADD THIS BLOCK ---
+const merged = new Map<string, ScoreEntry>();
 
+for (const entry of scores) {
+  const key = entry.name.toLowerCase();
+
+  if (!merged.has(key)) {
+    merged.set(key, entry);
+  } else {
+    const existing = merged.get(key)!;
+
+    if (
+      entry.score > existing.score ||
+      (entry.score === existing.score && entry.date > existing.date)
+    ) {
+      merged.set(key, entry);
+    }
+  }
+}
+
+const dedupedScores = Array.from(merged.values());
+// --- END BLOCK ---
     scores.sort((a, b) => b.score - a.score);
     const topScores = scores.slice(0, MAX_SCORES);
 
@@ -53,26 +74,3 @@ export const config: Config = {
   path: "/api/leaderboard",
   method: ["GET", "POST"],
 };
-// Merge duplicate names (case-insensitive)
-const merged = new Map();
-
-for (const entry of leaderboard) {
-  const key = entry.name.toLowerCase();
-
-  if (!merged.has(key)) {
-    merged.set(key, entry);
-  } else {
-    const existing = merged.get(key);
-
-    // Keep higher score OR newer timestamp if tie
-    if (
-      entry.score > existing.score ||
-      (entry.score === existing.score && entry.timestamp > existing.timestamp)
-    ) {
-      merged.set(key, entry);
-    }
-  }
-}
-
-// Replace leaderboard with deduplicated version
-const dedupedLeaderboard = Array.from(merged.values());

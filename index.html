@@ -1317,7 +1317,62 @@
           </div>
         </div>
       </div>
+const blogPosts = [
+  {
+    title: "Test Subject Notes",
+    date: "04.27.2026",
+    body: "Today I tried to write something intelligent and immediately failed. Good. That means there is room to improve. This is placeholder blog text for now. Eventually this can become math notes, project updates, thoughts on RIT, programming logs, or whatever strange garbage deserves to survive on the internet."
+  },
+  {
+    title: "Purple Terminal Experiment",
+    date: "04.14.2026",
+    body: "The interface is not finished. The writing is not finished. The point is not to look polished yet. The point is to build the machine, then make it sharper until it stops embarrassing me."
+  },
+  {
+    title: "Page Three Placeholder",
+    date: "03.29.2026",
+    body: "This is mock blog entry three. Nothing here has to make sense yet. It only needs to prove that the archive, date links, and page navigation work correctly."
+  }
+];
 
+let currentBlogIndex = 0;
+
+function renderBlog(index) {
+  currentBlogIndex = index;
+
+  document.getElementById("blog-title").textContent = blogPosts[index].title;
+  document.getElementById("blog-date").textContent = blogPosts[index].date;
+  document.getElementById("blog-body").textContent = blogPosts[index].body;
+  document.getElementById("blog-page-label").textContent = `PAGE ${index + 1} / ${blogPosts.length}`;
+
+  document.querySelectorAll(".blog-date-link").forEach((btn, i) => {
+    btn.classList.toggle("active", i === index);
+  });
+
+  document.getElementById("blog-prev").textContent =
+    index === 0 ? "← PAGE 1" : `← PAGE ${index}`;
+
+  document.getElementById("blog-next").textContent =
+    index === blogPosts.length - 1 ? `PAGE ${blogPosts.length} →` : `PAGE ${index + 2} →`;
+}
+
+document.querySelectorAll(".blog-date-link").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    renderBlog(Number(btn.dataset.blog));
+  });
+});
+
+document.getElementById("blog-prev").addEventListener("click", () => {
+  if (currentBlogIndex > 0) {
+    renderBlog(currentBlogIndex - 1);
+  }
+});
+
+document.getElementById("blog-next").addEventListener("click", () => {
+  if (currentBlogIndex < blogPosts.length - 1) {
+    renderBlog(currentBlogIndex + 1);
+  }
+});
       <!-- Math Game -->
       <div id="mathgame" class="panel">
         <div class="mathgame-section">

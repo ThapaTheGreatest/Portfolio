@@ -1,14 +1,10 @@
 <!-- Paste this before </body> on EACH blog-2026-xx-xx.html page -->
 <div id="blog-admin">
-  <button id="admin-open" type="button">EDIT BLOG</button>
-
-  <div id="admin-box" style="display:none;">
-    <input id="admin-code" type="password" placeholder="Code" />
-
-    <input id="edit-title" type="text" placeholder="Title" />
-    <textarea id="edit-body" rows="12" placeholder="Blog body"></textarea>
-
-    <button id="save-blog" type="button">SAVE TO GITHUB</button>
+  <input id="admin-code" type="password" placeholder="·" maxlength="12" autocomplete="off" aria-label="admin code" />
+  <div id="admin-box" hidden>
+    <input id="edit-title" placeholder="Title" />
+    <textarea id="edit-body" rows="10" placeholder="Blog body"></textarea>
+    <button id="save-blog" type="button">SAVE</button>
     <div id="save-status"></div>
   </div>
 </div>
@@ -16,90 +12,102 @@
 <style>
   #blog-admin {
     position: fixed;
-    right: 18px;
-    bottom: 18px;
+    top: 12px;
+    right: 12px;
     z-index: 9999;
     font-family: 'JetBrains Mono', monospace;
   }
-
-  #blog-admin button,
-  #blog-admin input,
-  #blog-admin textarea {
+  #admin-code {
+    width: 56px;
+    background: rgba(20, 8, 35, 0.35);
+    border: 1px solid rgba(201, 167, 255, 0.25);
+    color: #eadcff;
+    padding: 0.25rem 0.4rem;
+    font-family: inherit;
+    font-size: 0.75rem;
+    text-align: center;
+    opacity: 0.3;
+    transition: opacity 0.2s, border-color 0.2s;
+  }
+  #admin-code:hover, #admin-code:focus {
+    opacity: 1;
+    border-color: #c9a7ff;
+    outline: none;
+  }
+  #admin-box {
+    margin-top: 0.5rem;
+    width: 300px;
+    background: rgba(10, 3, 20, 0.97);
+    border: 1px solid #c9a7ff;
+    padding: 0.85rem;
+    box-shadow: 0 0 25px rgba(201, 167, 255, 0.25);
+  }
+  #admin-box input,
+  #admin-box textarea,
+  #admin-box button {
     width: 100%;
     background: rgba(20, 8, 35, 0.96);
     border: 1px solid #c9a7ff;
     color: #eadcff;
-    padding: 0.6rem;
+    padding: 0.55rem;
     font-family: inherit;
-    margin-bottom: 0.55rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    box-sizing: border-box;
   }
-
-  #admin-open {
-    width: auto;
-    cursor: pointer;
-  }
-
-  #admin-box {
-    width: 320px;
-    background: rgba(10, 3, 20, 0.97);
-    border: 1px solid #c9a7ff;
-    padding: 1rem;
-    box-shadow: 0 0 25px rgba(201, 167, 255, 0.25);
-  }
-
-  #edit-body {
-    resize: vertical;
-  }
-
+  #admin-box textarea { resize: vertical; }
+  #admin-box button { cursor: pointer; }
   #save-status {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: #d9c2ff;
-    min-height: 1rem;
+    min-height: 0.9rem;
   }
 </style>
 
 <script>
-  const adminBox = document.getElementById("admin-box");
-  const statusBox = document.getElementById("save-status");
+  (function () {
+    const codeInput = document.getElementById("admin-code");
+    const box = document.getElementById("admin-box");
+    const statusBox = document.getElementById("save-status");
+    let unlockedCode = "";
 
-  document.getElementById("admin-open").addEventListener("click", () => {
-    adminBox.style.display = adminBox.style.display === "none" ? "block" : "none";
-
-    document.getElementById("edit-title").value =
-      document.querySelector("h1").textContent.trim();
-
-    document.getElementById("edit-body").value =
-      document.getElementById("terminal-text").textContent.trim();
-  });
-
-  document.getElementById("save-blog").addEventListener("click", async () => {
-    const code = document.getElementById("admin-code").value;
-    const title = document.getElementById("edit-title").value.trim();
-    const body = document.getElementById("edit-body").value.trim();
-    const file = window.location.pathname.split("/").pop();
-
-    statusBox.textContent = "Saving to GitHub...";
-
-    try {
-      const res = await fetch("/api/update-blog", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code, file, title, body })
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        statusBox.textContent = data.error || "Save failed.";
-        return;
+    codeInput.addEventListener("input", () => {
+      if (codeInput.value === "2008") {
+        unlockedCode = codeInput.value;
+        box.hidden = false;
+        codeInput.style.display = "none";
+        document.getElementById("edit-title").value =
+          document.querySelector("h1").textContent.trim();
+        document.getElementById("edit-body").value =
+          document.getElementById("terminal-text").textContent.trim();
       }
+    });
 
-      document.querySelector("h1").textContent = title;
-      document.getElementById("terminal-text").textContent = body;
+    document.getElementById("save-blog").addEventListener("click", async () => {
+      const title = document.getElementById("edit-title").value.trim();
+      const body = document.getElementById("edit-body").value.trim();
+      let file = window.location.pathname.split("/").pop() || "";
+      if (file && !file.endsWith(".html")) file += ".html";
 
-      statusBox.textContent = "Saved. Netlify will redeploy shortly.";
-    } catch (err) {
-      statusBox.textContent = "Network error.";
-    }
-  });
+      statusBox.textContent = "Saving...";
+
+      try {
+        const res = await fetch("/api/update-blog", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code: unlockedCode, file, title, body })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          statusBox.textContent = "Saved. Reload soon.";
+          document.querySelector("h1").textContent = title;
+          document.getElementById("terminal-text").textContent = body;
+        } else {
+          statusBox.textContent = data.error || "Save failed.";
+        }
+      } catch (err) {
+        statusBox.textContent = "Network error.";
+      }
+    });
+  })();
 </script>

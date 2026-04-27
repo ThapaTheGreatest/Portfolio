@@ -11,75 +11,75 @@ interface ScoreEntry {
   date: string;
 }
 
+function dedupeScores(scores: ScoreEntry[]): ScoreEntry[] {
+  const merged = new Map<string, ScoreEntry>();
+
+  for (const entry of scores) {
+    const key = entry.name.trim().toLowerCase();
+    const existing = merged.get(key);
+
+    if (
+      !existing ||
+      entry.score > existing.score ||
+      (entry.score === existing.score && entry.date > existing.date)
+    ) {
+      merged.set(key, {
+        name: entry.name.trim(),
+        score: entry.score,
+        date: entry.date,
+      });
+    }
+  }
+
+  return Array.from(merged.values())
+    .sort((a, b) => b.score - a.score)
+    .slice(0, MAX_SCORES);
+}
+
 export default async (req: Request) => {
   const store = getStore({ name: STORE_NAME, consistency: "strong" });
 
   if (req.method === "GET") {
-    const scores = (await store.get(SCORES_KEY, { type: "json" })) as ScoreEntry[] | null;
-    return Response.json(scores || []);
+    const existing = (await store.get(SCORES_KEY, {
+      type: "json",
+    })) as ScoreEntry[] | null;
+
+    const scores = dedupeScores(existing || []);
+
+    await store.setJSON(SCORES_KEY, scores);
+
+    return Response.json(scores);
   }
 
   if (req.method === "POST") {
     const { name, score } = await req.json();
 
-    if (!name || typeof name !== "string" || name.trim().length === 0 || name.trim().length > 20) {
-      return Response.json({ error: "Name must be 1-20 characters" }, { status: 400 });
+    const cleanName = typeof name === "string" ? name.trim() : "";
+
+    if (!cleanName || cleanName.length > 20) {
+      return Response.json(
+        { error: "Name must be 1-20 characters" },
+        { status: 400 }
+      );
     }
+
     if (typeof score !== "number" || !Number.isInteger(score)) {
       return Response.json({ error: "Invalid score" }, { status: 400 });
     }
 
-    const existing = (await store.get(SCORES_KEY, { type: "json" })) as ScoreEntry[] | null;
+    const existing = (await store.get(SCORES_KEY, {
+      type: "json",
+    })) as ScoreEntry[] | null;
+
     const scores: ScoreEntry[] = existing || [];
 
     scores.push({
-      name: name.trim(),
+      name: cleanName,
       score,
       date: new Date().toISOString(),
     });
-// --- ADD THIS BLOCK ---
-const merged = new Map<string, ScoreEntry>();
 
-for (const entry of scores) {
-  const key = entry.name.toLowerCase();
-
-  if (!merged.has(key)) {
-    merged.set(key, entry);
-  } else {
-    const existing = merged.get(key)!;
-
-    if (
-      entry.score > existing.score ||
-      (entry.score === existing.score && entry.date > existing.date)
-    ) {
-      merged.set(key, entry);
-    }
-  }
-}
-const merged = new Map();
-
-for (const entry of leaderboard) {
-  const key = entry.name.toLowerCase();
-
-  if (!merged.has(key)) {
-    merged.set(key, entry);
-  } else {
-    const existing = merged.get(key);
-
-    // Keep higher score OR newer timestamp if tie
-    if (
-      entry.score > existing.score ||
-      (entry.score === existing.score && entry.timestamp > existing.timestamp)
-    ) {
-      merged.set(key, entry);
-    }
-  }
-}
-
-const dedupedScores = Array.from(merged.values());
-// --- END BLOCK ---
-    scores.sort((a, b) => b.score - a.score);
-    const topScores = scores.slice(0, MAX_SCORES);
+    const topScores = dedupeScores(scores);
 
     await store.setJSON(SCORES_KEY, topScores);
 

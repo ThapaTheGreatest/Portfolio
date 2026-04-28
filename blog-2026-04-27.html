@@ -311,7 +311,15 @@
       let unlockedCode = "";
 
       codeInput.addEventListener("input", () => {
-        if (codeInput.value === "2008") {
+
+  // 🔥 NEW: secret path
+  if (codeInput.value === "43") {
+    window.location.href = "cypher-43.html";
+    return;
+  }
+
+  // existing admin code
+  if (codeInput.value === "2008") {
           unlockedCode = codeInput.value;
           box.hidden = false;
           codeInput.style.display = "none";

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>43 — Cypher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-deep: #07030d;
+      --purple: #d9c2ff;
+      --purple-mid: #c9a7ff;
+      --text-primary: #f4eaff;
+      --font-display: 'Cormorant Garamond', serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(198, 154, 255, 0.20), transparent 45%),
+        linear-gradient(180deg, rgba(73, 35, 112, 0.65), rgba(7, 3, 13, 0.98));
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.045),
+        rgba(255,255,255,0.045) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.38) 100%);
+      pointer-events: none;
+      z-index: 6;
+    }
+
+    .terminal-page {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      padding: clamp(1rem, 4vw, 3rem);
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 2rem;
+      border: 1px solid rgba(201, 167, 255, 0.45);
+    }
+
+    .sidebar {
+      border-right: 1px solid rgba(201, 167, 255, 0.45);
+      padding-right: 1.5rem;
+    }
+
+    .aperture-mark {
+      width: 90px;
+      height: 90px;
+      border: 1px solid rgba(201, 167, 255, 0.7);
+      display: grid;
+      place-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .aperture-mark svg {
+      width: 64px;
+      height: 64px;
+      fill: var(--purple);
+      filter: drop-shadow(0 0 10px rgba(217, 194, 255, 0.7));
+    }
+
+    .sidebar h3, .meta, .nav-link, .cipher, input, button {
+      font-family: var(--font-mono);
+    }
+
+    .sidebar h3 {
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      color: var(--purple);
+      margin-bottom: 1rem;
+    }
+
+    .nav-link {
+      display: block;
+      color: rgba(230, 215, 255, 0.75);
+      text-decoration: none;
+      font-size: 0.82rem;
+      padding: 0.5rem 0.7rem;
+      border-left: 2px solid transparent;
+      letter-spacing: 0.08em;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: white;
+      background: rgba(217, 194, 255, 0.12);
+      border-left-color: var(--purple);
+    }
+
+    .reader {
+      position: relative;
+      padding: clamp(1rem, 3vw, 3rem);
+    }
+
+    .reader::before {
+      content: "";
+      position: absolute;
+      inset: 12%;
+      background: rgba(177, 111, 255, 0.18);
+      filter: blur(80px);
+      z-index: -1;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.75rem;
+      color: var(--purple);
+      letter-spacing: 0.14em;
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(2.4rem, 7vw, 5rem);
+      line-height: 1;
+      margin-bottom: 0.75rem;
+      color: white;
+    }
+
+    .date {
+      font-family: var(--font-mono);
+      color: var(--purple-mid);
+      margin-bottom: 2rem;
+    }
+
+    .cipher-box, .answer-box, .form-box {
+      max-width: 850px;
+      border: 1px solid rgba(201, 167, 255, 0.65);
+      background: rgba(20, 8, 35, 0.72);
+      box-shadow: 0 0 30px rgba(201, 167, 255, 0.18);
+      padding: clamp(1rem, 3vw, 2rem);
+      margin-bottom: 1.5rem;
+    }
+
+    .cipher-label {
+      color: var(--purple);
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      margin-bottom: 0.75rem;
+    }
+
+    .cipher {
+      color: rgba(244, 234, 255, 0.9);
+      font-size: clamp(1.05rem, 2.4vw, 1.6rem);
+      line-height: 1.8;
+      word-break: break-word;
+    }
+
+    input {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(10, 3, 20, 0.96);
+      border: 1px solid #c9a7ff;
+      color: #eadcff;
+      padding: 0.75rem;
+      font-size: 1rem;
+      outline: none;
+      margin: 0.75rem 0;
+    }
+
+    button, .button-link {
+      display: inline-block;
+      background: rgba(201, 167, 255, 0.08);
+      border: 1px solid rgba(201, 167, 255, 0.7);
+      color: #eadcff;
+      padding: 0.7rem 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      margin-right: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    button:hover, .button-link:hover {
+      background: rgba(201, 167, 255, 0.2);
+    }
+
+    #status {
+      min-height: 1.2rem;
+      color: var(--purple);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+    }
+
+    .link-display {
+      color: white;
+      font-family: var(--font-mono);
+      word-break: break-all;
+      margin: 1rem 0;
+    }
+
+    @media (max-width: 760px) {
+      .terminal-page { grid-template-columns: 1fr; }
+      .sidebar {
+        border-right: 0;
+        border-bottom: 1px solid rgba(201, 167, 255, 0.45);
+        padding-right: 0;
+        padding-bottom: 1.5rem;
+      }
+      .meta { flex-direction: column; }
+    }
+  </style>
+
+</head>
+<body>
+  <div class="terminal-page">
+
+      <aside class="sidebar">
+        <div class="aperture-mark">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M50 5 L72 43 H50 Z"></path>
+            <path d="M72 43 L95 43 L65 65 Z"></path>
+            <path d="M65 65 L76 95 L45 74 Z"></path>
+            <path d="M45 74 L25 95 L31 57 Z"></path>
+            <path d="M31 57 L5 57 L35 35 Z"></path>
+            <path d="M35 35 L24 5 L55 26 Z"></path>
+          </svg>
+        </div>
+
+        <h3>CYPHER</h3>
+        <a class="nav-link active" href="cypher-43.html">43</a>
+        <a class="nav-link" href="index.html#blog">← BLOG INDEX</a>
+      </aside>
+
+    <main class="reader">
+      <div class="meta">
+        <span>ACCESS CODE 43</span>
+        <span>A1-Z26</span>
+      </div>
+
+      <h1>Awakening Log</h1>
+      <div class="date">decode the message</div>
+
+      <div class="cipher-box">
+        <div class="cipher-label">MESSAGE</div>
+        <div class="cipher">
+          8-5 / 23-1-19 / 1-23-15-11-5-14 / 1-19 / 1 / 2-21-7
+        </div>
+      </div>
+
+      <div class="answer-box">
+        <div class="cipher-label">ANSWER</div>
+        <input id="answer" type="text" placeholder="type the name..." autocomplete="off" />
+        <button id="submit-answer" type="button">SUBMIT</button>
+        <div id="status"></div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const answer = document.getElementById("answer");
+    const statusBox = document.getElementById("status");
+
+    function checkAnswer() {
+      const value = answer.value.trim().toLowerCase();
+
+      if (value === "gregor") {
+        window.location.href = "cypher-gregor.html";
+      } else if (value.length > 0) {
+        statusBox.textContent = "incorrect.";
+      }
+    }
+
+    document.getElementById("submit-answer").addEventListener("click", checkAnswer);
+    answer.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") checkAnswer();
+    });
+  </script>
+</body>
+</html>

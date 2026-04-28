@@ -303,57 +303,71 @@
     }
   </style>
 
-  <script>
-    (function () {
-      const codeInput = document.getElementById("admin-code");
-      const box = document.getElementById("admin-box");
-      const statusBox = document.getElementById("save-status");
-      let unlockedCode = "";
+   <script>
+  (function () {
+    const codeInput = document.getElementById("admin-code");
+    const box = document.getElementById("admin-box");
+    const statusBox = document.getElementById("save-status");
+    let unlockedCode = "";
 
-      codeInput.addEventListener("input", () => {
-        if (codeInput.value === "2008") {
-          unlockedCode = codeInput.value;
-          box.hidden = false;
-          codeInput.style.display = "none";
-          document.getElementById("edit-title").value =
-            document.querySelector("h1").textContent.trim();
-          document.getElementById("edit-body").value =
-            document.getElementById("terminal-text").textContent.trim();
+    codeInput.addEventListener("input", () => {
+      const code = codeInput.value.trim();
+
+      // Secret redirect on second blog entry
+      if (code === "23") {
+        window.location.href = "potsu-puzzle.html";
+        return;
+      }
+
+      // Admin editor
+      if (code === "2008") {
+        unlockedCode = code;
+        box.hidden = false;
+        codeInput.style.display = "none";
+
+        document.getElementById("edit-title").value =
+          document.querySelector("h1").textContent.trim();
+
+        document.getElementById("edit-body").value =
+          document.getElementById("terminal-text").textContent.trim();
+      }
+    });
+
+    document.getElementById("save-blog").addEventListener("click", async () => {
+      const title = document.getElementById("edit-title").value.trim();
+      const body = document.getElementById("edit-body").value.trim();
+
+      let file = window.location.pathname.split("/").pop() || "";
+      if (file && !file.endsWith(".html")) file += ".html";
+
+      statusBox.textContent = "Saving...";
+
+      try {
+        const res = await fetch("/api/update-blog", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            code: unlockedCode,
+            file,
+            title,
+            body
+          })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          statusBox.textContent = "Saved. Reload soon.";
+          document.querySelector("h1").textContent = title;
+          document.getElementById("terminal-text").textContent = body;
+        } else {
+          statusBox.textContent = data.error || "Save failed.";
         }
-      });
-
-      document.getElementById("save-blog").addEventListener("click", async () => {
-        const title = document.getElementById("edit-title").value.trim();
-        const body = document.getElementById("edit-body").value.trim();
-        let file = window.location.pathname.split("/").pop() || "";
-        if (file && !file.endsWith(".html")) file += ".html";
-
-        statusBox.textContent = "Saving...";
-
-        try {
-          const res = await fetch("/api/update-blog", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ code: unlockedCode, file, title, body })
-          });
-          const data = await res.json();
-          if (res.ok) {
-            statusBox.textContent = "Saved. Reload soon.";
-            document.querySelector("h1").textContent = title;
-            document.getElementById("terminal-text").textContent = body;
-          } else {
-            statusBox.textContent = data.error || "Save failed.";
-          }
-        } catch (err) {
-          statusBox.textContent = "Network error.";
-              if (codeInput.value === "23") {
-  window.location.href = "potsu-puzzle.html";
-  return;
-        }
-      });
-    })();
-
-}
-  </script>
+      } catch (err) {
+        statusBox.textContent = "Network error.";
+      }
+    });
+  })();
+</script>
 </body>
 </html>

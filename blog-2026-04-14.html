@@ -346,12 +346,13 @@
           }
         } catch (err) {
           statusBox.textContent = "Network error.";
+              if (codeInput.value === "23") {
+  window.location.href = "potsu-puzzle.html";
+  return;
         }
       });
     })();
-    if (codeInput.value === "23") {
-  window.location.href = "potsu-puzzle.html";
-  return;
+
 }
   </script>
 </body>

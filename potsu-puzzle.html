@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>23 — Potsu Puzzle</title>
+  <link rel="icon" type="image/png" href="/favicon.png" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -273,15 +276,18 @@
 
       <div class="message-box">
         <div class="label">MESSAGE</div>
-        <div class="message">the man who made the screenwrite "Pork",
+        <div class="message">the man who produced Pork,
 the name is in a song,
-Take the number of that album that contains the song, multiply it by the album with the song named after the third piece on Miles Davis' 1959 album Kind of Blue.
-Finally, divide it by 5
-Then that is your radius
-now find the area of the circle
-round to the hundreths place
+take the number of that album
+then put it into the first number of pi that pops up.
 
-</div>
+example:
+3 = 1
+1 = 2
+
+as it goes:
+
+3.14159...</div>
 
         <a class="spotify-link" href="https://open.spotify.com/artist/5XE0fiZWGbq9TcSuWwJ1fA" target="_blank" rel="noopener">
           OPEN POTSU SPOTIFY
@@ -290,7 +296,7 @@ round to the hundreths place
 
       <div class="answer-box">
         <div class="label">NUMBER INPUT</div>
-        <input id="number-answer" type="number" placeholder="enter number..." autocomplete="off" />
+        <input id="number-answer" type="text" inputmode="decimal" placeholder="enter number..." autocomplete="off" />
         <button id="submit-number" type="button">SUBMIT</button>
         <div id="status"></div>
       </div>
@@ -309,11 +315,12 @@ round to the hundreths place
         return;
       }
 
-      // Put your next correct number here later.
-      // Example:
-      // if (value === "314") window.location.href = "next-page.html";
+      if (value === "12.57") {
+        window.location.href = "zenith-puzzle.html";
+        return;
+      }
 
-      statusBox.textContent = "received.";
+      statusBox.textContent = "incorrect.";
     }
 
     document.getElementById("submit-number").addEventListener("click", checkNumber);

@@ -97,10 +97,11 @@
     .item-name,
     .small,
     button,
-    input,
     #status,
     .recipe-line,
-    .progress {
+    .progress,
+    .station-name,
+    .selected-label {
       font-family: var(--font-mono);
     }
 
@@ -192,20 +193,53 @@
 
     .game-grid {
       display: grid;
-      grid-template-columns: minmax(260px, 1fr) 330px;
+      grid-template-columns: minmax(300px, 1fr) 360px;
       gap: 1rem;
       align-items: start;
     }
 
-    .craft-area {
-      min-height: 420px;
+    .station-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .station {
+      border: 1px solid rgba(201, 167, 255, 0.38);
+      background: rgba(10, 3, 20, 0.78);
+      padding: 0.65rem;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      gap: 0.35rem;
+      min-height: 92px;
+    }
+
+    .station.active {
+      border-color: white;
+      background: rgba(201, 167, 255, 0.17);
+      box-shadow: 0 0 18px rgba(201, 167, 255, 0.22);
+    }
+
+    .station img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      image-rendering: pixelated;
+    }
+
+    .station-name {
+      font-size: 0.66rem;
+      line-height: 1.25;
     }
 
     .inventory {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
       gap: 0.65rem;
-      max-height: 590px;
+      max-height: 650px;
       overflow: auto;
       padding-right: 0.25rem;
     }
@@ -216,7 +250,7 @@
       color: rgba(244, 234, 255, 0.92);
       padding: 0.6rem;
       min-height: 106px;
-      cursor: grab;
+      cursor: pointer;
       user-select: none;
       transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
       display: grid;
@@ -225,14 +259,14 @@
       gap: 0.35rem;
     }
 
-    .item:active {
-      cursor: grabbing;
-      transform: scale(0.97);
-    }
-
     .item:hover {
       border-color: var(--purple-mid);
       background: rgba(25, 8, 45, 0.92);
+    }
+
+    .item.selected {
+      border-color: white;
+      background: rgba(217, 194, 255, 0.12);
     }
 
     .item img {
@@ -259,60 +293,29 @@
       100% { box-shadow: 0 0 0 rgba(217, 194, 255, 0.0); }
     }
 
-    .drop-zone {
-      min-height: 210px;
+    .selected-box {
+      min-height: 160px;
       border: 1px dashed rgba(201, 167, 255, 0.7);
       background:
         radial-gradient(circle at center, rgba(201, 167, 255, 0.12), transparent 70%),
         rgba(10, 3, 20, 0.55);
-      display: grid;
-      place-items: center;
-      text-align: center;
       padding: 1rem;
       margin-bottom: 1rem;
-      transition: background 0.2s ease, border-color 0.2s ease;
     }
 
-    .drop-zone.drag-over {
-      border-color: white;
-      background:
-        radial-gradient(circle at center, rgba(201, 167, 255, 0.25), transparent 70%),
-        rgba(10, 3, 20, 0.75);
+    .selected-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.65rem;
     }
 
-    .drop-zone .small {
-      color: rgba(244, 234, 255, 0.7);
-      line-height: 1.6;
-      font-size: 0.78rem;
-    }
-
-    .selected-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.7rem;
-      margin-bottom: 1rem;
-    }
-
-    .slot {
-      min-height: 118px;
-      border: 1px solid rgba(201, 167, 255, 0.38);
-      background: rgba(10, 3, 20, 0.58);
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 0.75rem;
-    }
-
-    .slot.filled {
-      border-color: var(--purple-mid);
-    }
-
-    .slot img {
-      width: 46px;
-      height: 46px;
-      object-fit: contain;
-      image-rendering: pixelated;
-      margin-bottom: 0.25rem;
+    .selected-pill {
+      border: 1px solid rgba(201, 167, 255, 0.5);
+      padding: 0.35rem 0.55rem;
+      background: rgba(217, 194, 255, 0.09);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
     }
 
     .actions {
@@ -347,7 +350,7 @@
     }
 
     .recipe-list {
-      max-height: 230px;
+      max-height: 240px;
       overflow: auto;
       border-top: 1px solid rgba(201, 167, 255, 0.25);
       padding-top: 0.7rem;
@@ -383,7 +386,7 @@
       display: block;
     }
 
-    @media (max-width: 920px) {
+    @media (max-width: 960px) {
       .terminal-page { grid-template-columns: 1fr; }
 
       .sidebar {
@@ -426,22 +429,22 @@
     <main class="reader">
       <div class="meta">
         <span>FINAL ASSEMBLY</span>
-        <span>INFINITE CRAFT MODE</span>
+        <span>REAL STATIONS ONLY</span>
       </div>
 
       <h1>Make the Zenith</h1>
-      <div class="date">drag ingredients into the forge. combine everything from basic parts.</div>
+      <div class="date">select a crafting station. click ingredients. craft the sword chain.</div>
 
       <div class="box">
         <div class="label">RULES</div>
-        <div class="message">Drag one item into the forge, then drag another.
-If the pair makes something, it appears in your inventory.
-This is intentionally excessive. Good luck.</div>
+        <div class="message">This version uses actual Terraria-style stations.
+Select a station first, then select every ingredient needed for the recipe.
+Some items are loot/drop items because Terraria does not craft every Zenith ingredient from raw ore. No fake stone-bar bullshit this time.</div>
 
         <div class="actions">
           <a class="wiki-link" href="https://terraria.wiki.gg/wiki/Zenith" target="_blank" rel="noopener">OPEN TERRARIA WIKI</a>
           <button id="reset-game" type="button">RESET PUZZLE</button>
-          <button id="show-hints" type="button">SHOW DISCOVERED RECIPES</button>
+          <button id="show-hints" type="button">SHOW SOLVED RECIPES</button>
         </div>
 
         <div class="progress" id="progress"></div>
@@ -449,30 +452,24 @@ This is intentionally excessive. Good luck.</div>
 
       <div class="game-grid">
         <section class="box craft-area">
-          <div class="label">FORGE</div>
+          <div class="label">CRAFTING STATIONS</div>
+          <div class="station-grid" id="station-grid"></div>
 
-          <div class="drop-zone" id="drop-zone">
-            <div class="small">Drop two items here.<br>Or click two items in inventory.</div>
-          </div>
-
-          <div class="selected-row">
-            <div class="slot" id="slot-a">
-              <div class="small">slot A</div>
-            </div>
-            <div class="slot" id="slot-b">
-              <div class="small">slot B</div>
-            </div>
+          <div class="selected-box">
+            <div class="selected-label">CURRENT STATION: <span id="current-station">none</span></div>
+            <div class="selected-label">SELECTED INGREDIENTS:</div>
+            <div class="selected-list" id="selected-list"></div>
           </div>
 
           <div class="actions">
-            <button id="combine-button" type="button">COMBINE</button>
-            <button id="clear-button" type="button">CLEAR</button>
+            <button id="craft-button" type="button">CRAFT</button>
+            <button id="clear-button" type="button">CLEAR INGREDIENTS</button>
           </div>
 
           <div id="status"></div>
           <div id="success" class="success">
             ZENITH CREATED.<br>
-            final puzzle complete. you made the blade at the end of the tree.
+            final puzzle complete. you made the endgame blade.
           </div>
 
           <div class="recipe-list" id="recipe-list" hidden></div>
@@ -498,166 +495,203 @@ This is intentionally excessive. Good luck.</div>
     `);
 
     const imageMap = {
-      "Wood": "Wood.png",
-      "Stone Block": "Stone_Block.png",
-      "Torch": "Torch.png",
-      "Gel": "Gel.png",
+      "Furnace": "Furnace.png",
+      "Hellforge": "Hellforge.png",
+      "Iron Anvil": "Iron_Anvil.png",
+      "Demon Altar": "Demon_Altar.png",
+      "Mythril Anvil": "Mythril_Anvil.png",
+
       "Copper Ore": "Copper_Ore.png",
-      "Iron Ore": "Iron_Ore.png",
-      "Silver Ore": "Silver_Ore.png",
-      "Gold Ore": "Gold_Ore.png",
       "Demonite Ore": "Demonite_Ore.png",
-      "Shadow Scale": "Shadow_Scale.png",
       "Crimtane Ore": "Crimtane_Ore.png",
-      "Tissue Sample": "Tissue_Sample.png",
-      "Jungle Spores": "Jungle_Spores.png",
-      "Stinger": "Stinger.png",
       "Hellstone": "Hellstone.png",
       "Obsidian": "Obsidian.png",
-      "Fallen Star": "Fallen_Star.png",
-      "Bee Wax": "Bee_Wax.png",
+      "Jungle Spores": "Jungle_Spores.png",
+      "Stinger": "Stinger.png",
+      "Vine": "Vine.png",
       "Chlorophyte Ore": "Chlorophyte_Ore.png",
+      "Hallowed Bar": "Hallowed_Bar.png",
+      "Soul of Fright": "Soul_of_Fright.png",
+      "Soul of Might": "Soul_of_Might.png",
+      "Soul of Sight": "Soul_of_Sight.png",
       "Broken Hero Sword": "Broken_Hero_Sword.png",
-      "Luminite Bar": "Luminite_Bar.png",
-      "Fragment": "Fragment.png",
-      "Solar Fragment": "Solar_Fragment.png",
-      "Vortex Fragment": "Vortex_Fragment.png",
-      "Nebula Fragment": "Nebula_Fragment.png",
-      "Stardust Fragment": "Stardust_Fragment.png",
+
       "Copper Bar": "Copper_Bar.png",
-      "Iron Bar": "Iron_Bar.png",
-      "Silver Bar": "Silver_Bar.png",
-      "Gold Bar": "Gold_Bar.png",
       "Demonite Bar": "Demonite_Bar.png",
       "Crimtane Bar": "Crimtane_Bar.png",
       "Hellstone Bar": "Hellstone_Bar.png",
       "Chlorophyte Bar": "Chlorophyte_Bar.png",
+
       "Copper Shortsword": "Copper_Shortsword.png",
-      "Iron Broadsword": "Iron_Broadsword.png",
-      "Silver Broadsword": "Silver_Broadsword.png",
-      "Gold Broadsword": "Gold_Broadsword.png",
       "Light's Bane": "Light%27s_Bane.png",
       "Blood Butcherer": "Blood_Butcherer.png",
       "Blade of Grass": "Blade_of_Grass.png",
       "Volcano": "Volcano.png",
       "Muramasa": "Muramasa.png",
-      "Enchanted Sword": "Enchanted_Sword.png",
+      "Night's Edge": "Night%27s_Edge.png",
+      "Excalibur": "Excalibur.png",
+      "True Excalibur": "True_Excalibur.png",
+      "True Night's Edge": "True_Night%27s_Edge.png",
+      "Terra Blade": "Terra_Blade.png",
+
       "Starfury": "Starfury.png",
+      "Enchanted Sword": "Enchanted_Sword.png",
       "Bee Keeper": "Bee_Keeper.png",
       "Seedler": "Seedler.png",
       "The Horseman's Blade": "The_Horseman%27s_Blade.png",
       "Influx Waver": "Influx_Waver.png",
-      "Excalibur": "Excalibur.png",
-      "Night's Edge": "Night%27s_Edge.png",
-      "True Excalibur": "True_Excalibur.png",
-      "True Night's Edge": "True_Night%27s_Edge.png",
-      "Terra Blade": "Terra_Blade.png",
-      "Meowmere": "Meowmere.png",
       "Star Wrath": "Star_Wrath.png",
+      "Meowmere": "Meowmere.png",
       "Zenith": "Zenith.png"
     };
 
+    const stations = [
+      "Furnace",
+      "Hellforge",
+      "Iron Anvil",
+      "Demon Altar",
+      "Mythril Anvil"
+    ];
+
     const starterItems = [
-      "Wood",
-      "Stone Block",
-      "Gel",
       "Copper Ore",
-      "Iron Ore",
-      "Silver Ore",
-      "Gold Ore",
       "Demonite Ore",
-      "Shadow Scale",
       "Crimtane Ore",
-      "Tissue Sample",
-      "Jungle Spores",
-      "Stinger",
       "Hellstone",
       "Obsidian",
-      "Fallen Star",
-      "Bee Wax",
+      "Jungle Spores",
+      "Stinger",
+      "Vine",
       "Chlorophyte Ore",
+      "Hallowed Bar",
+      "Soul of Fright",
+      "Soul of Might",
+      "Soul of Sight",
       "Broken Hero Sword",
-      "Luminite Bar",
-      "Solar Fragment",
-      "Vortex Fragment",
-      "Nebula Fragment",
-      "Stardust Fragment",
+
       "Muramasa",
+      "Starfury",
       "Enchanted Sword",
+      "Bee Keeper",
       "Seedler",
       "The Horseman's Blade",
       "Influx Waver",
-      "Meowmere",
-      "Star Wrath"
+      "Star Wrath",
+      "Meowmere"
     ];
 
     const recipes = [
-      [["Wood", "Gel"], "Torch"],
-      [["Copper Ore", "Stone Block"], "Copper Bar"],
-      [["Iron Ore", "Stone Block"], "Iron Bar"],
-      [["Silver Ore", "Stone Block"], "Silver Bar"],
-      [["Gold Ore", "Stone Block"], "Gold Bar"],
-      [["Demonite Ore", "Shadow Scale"], "Demonite Bar"],
-      [["Crimtane Ore", "Tissue Sample"], "Crimtane Bar"],
-      [["Hellstone", "Obsidian"], "Hellstone Bar"],
-      [["Chlorophyte Ore", "Stone Block"], "Chlorophyte Bar"],
+      {
+        station: "Furnace",
+        ingredients: ["Copper Ore"],
+        output: "Copper Bar"
+      },
+      {
+        station: "Furnace",
+        ingredients: ["Demonite Ore"],
+        output: "Demonite Bar"
+      },
+      {
+        station: "Furnace",
+        ingredients: ["Crimtane Ore"],
+        output: "Crimtane Bar"
+      },
+      {
+        station: "Hellforge",
+        ingredients: ["Hellstone", "Obsidian"],
+        output: "Hellstone Bar"
+      },
+      {
+        station: "Mythril Anvil",
+        ingredients: ["Chlorophyte Ore"],
+        output: "Chlorophyte Bar"
+      },
 
-      [["Copper Bar", "Wood"], "Copper Shortsword"],
-      [["Iron Bar", "Wood"], "Iron Broadsword"],
-      [["Silver Bar", "Wood"], "Silver Broadsword"],
-      [["Gold Bar", "Wood"], "Gold Broadsword"],
+      {
+        station: "Iron Anvil",
+        ingredients: ["Copper Bar"],
+        output: "Copper Shortsword"
+      },
+      {
+        station: "Iron Anvil",
+        ingredients: ["Demonite Bar"],
+        output: "Light's Bane"
+      },
+      {
+        station: "Iron Anvil",
+        ingredients: ["Crimtane Bar"],
+        output: "Blood Butcherer"
+      },
+      {
+        station: "Iron Anvil",
+        ingredients: ["Jungle Spores", "Stinger", "Vine"],
+        output: "Blade of Grass"
+      },
+      {
+        station: "Iron Anvil",
+        ingredients: ["Hellstone Bar"],
+        output: "Volcano"
+      },
 
-      [["Demonite Bar", "Shadow Scale"], "Light's Bane"],
-      [["Crimtane Bar", "Tissue Sample"], "Blood Butcherer"],
-      [["Jungle Spores", "Stinger"], "Blade of Grass"],
-      [["Hellstone Bar", "Torch"], "Volcano"],
-      [["Fallen Star", "Gold Broadsword"], "Starfury"],
-      [["Bee Wax", "Stinger"], "Bee Keeper"],
+      {
+        station: "Demon Altar",
+        ingredients: ["Muramasa", "Blade of Grass", "Volcano", "Light's Bane"],
+        output: "Night's Edge"
+      },
+      {
+        station: "Demon Altar",
+        ingredients: ["Muramasa", "Blade of Grass", "Volcano", "Blood Butcherer"],
+        output: "Night's Edge"
+      },
 
-      [["Muramasa", "Blade of Grass"], "Jungle Edge"],
-      [["Jungle Edge", "Volcano"], "Molten Edge"],
-      [["Molten Edge", "Light's Bane"], "Night's Edge"],
-      [["Molten Edge", "Blood Butcherer"], "Night's Edge"],
-
-      [["Gold Broadsword", "Silver Broadsword"], "Pre-Hardmode Blade Core"],
-      [["Pre-Hardmode Blade Core", "Copper Shortsword"], "Old Sword Memory"],
-      [["Old Sword Memory", "Enchanted Sword"], "Enchanted Memory"],
-      [["Enchanted Memory", "Starfury"], "Sky Memory"],
-      [["Sky Memory", "Bee Keeper"], "Hive Memory"],
-
-      [["Iron Broadsword", "Broken Hero Sword"], "Excalibur"],
-      [["Excalibur", "Broken Hero Sword"], "True Excalibur"],
-      [["Night's Edge", "Broken Hero Sword"], "True Night's Edge"],
-      [["True Excalibur", "True Night's Edge"], "Terra Blade"],
-
-      [["Chlorophyte Bar", "Broken Hero Sword"], "Chlorophyte Edge"],
-      [["Chlorophyte Edge", "Terra Blade"], "Seeded Terra Blade"],
-      [["Seeded Terra Blade", "Seedler"], "Floral Terra Blade"],
-
-      [["Solar Fragment", "Luminite Bar"], "Solar Wrath Core"],
-      [["Vortex Fragment", "Nebula Fragment"], "Celestial Core"],
-      [["Celestial Core", "Stardust Fragment"], "Astral Core"],
-      [["Astral Core", "Solar Wrath Core"], "Moon Lord Memory"],
-
-      [["Moon Lord Memory", "Meowmere"], "Cataclysm Edge"],
-      [["Cataclysm Edge", "Star Wrath"], "Stellar Cataclysm"],
-      [["Stellar Cataclysm", "Influx Waver"], "Wavering Starblade"],
-      [["Wavering Starblade", "The Horseman's Blade"], "Horseman's Starblade"],
-
-      [["Horseman's Starblade", "Floral Terra Blade"], "Zenith Frame"],
-      [["Zenith Frame", "Hive Memory"], "Zenith"]
+      {
+        station: "Mythril Anvil",
+        ingredients: ["Hallowed Bar"],
+        output: "Excalibur"
+      },
+      {
+        station: "Mythril Anvil",
+        ingredients: ["Excalibur", "Chlorophyte Bar"],
+        output: "True Excalibur"
+      },
+      {
+        station: "Mythril Anvil",
+        ingredients: ["Night's Edge", "Soul of Fright", "Soul of Might", "Soul of Sight"],
+        output: "True Night's Edge"
+      },
+      {
+        station: "Mythril Anvil",
+        ingredients: ["True Excalibur", "True Night's Edge", "Broken Hero Sword"],
+        output: "Terra Blade"
+      },
+      {
+        station: "Mythril Anvil",
+        ingredients: [
+          "Terra Blade",
+          "Meowmere",
+          "Star Wrath",
+          "Influx Waver",
+          "The Horseman's Blade",
+          "Seedler",
+          "Starfury",
+          "Bee Keeper",
+          "Enchanted Sword",
+          "Copper Shortsword"
+        ],
+        output: "Zenith"
+      }
     ];
 
-    const discovered = new Set(JSON.parse(localStorage.getItem("zenithDiscovered") || "null") || starterItems);
-    const solvedRecipes = new Set(JSON.parse(localStorage.getItem("zenithRecipes") || "[]"));
+    const discovered = new Set(JSON.parse(localStorage.getItem("zenithStationDiscovered") || "null") || starterItems);
+    const solvedRecipes = new Set(JSON.parse(localStorage.getItem("zenithStationRecipes") || "[]"));
 
-    let slotA = null;
-    let slotB = null;
+    let currentStation = null;
+    let selected = [];
 
+    const stationGrid = document.getElementById("station-grid");
     const inventoryEl = document.getElementById("inventory");
-    const slotAEl = document.getElementById("slot-a");
-    const slotBEl = document.getElementById("slot-b");
-    const dropZone = document.getElementById("drop-zone");
+    const selectedList = document.getElementById("selected-list");
+    const currentStationEl = document.getElementById("current-station");
     const statusBox = document.getElementById("status");
     const successBox = document.getElementById("success");
     const recipeList = document.getElementById("recipe-list");
@@ -669,26 +703,54 @@ This is intentionally excessive. Good luck.</div>
       return WIKI_IMAGE_BASE + file;
     }
 
-    function recipeKey(a, b) {
-      return [a, b].sort().join(" + ");
+    function normalizeList(list) {
+      return [...list].sort().join("|");
     }
 
-    function findRecipe(a, b) {
-      const key = recipeKey(a, b);
+    function exactRecipeMatch(recipe) {
+      return (
+        recipe.station === currentStation &&
+        normalizeList(recipe.ingredients) === normalizeList(selected)
+      );
+    }
 
-      for (const [inputs, output] of recipes) {
-        if (recipeKey(inputs[0], inputs[1]) === key) {
-          return output;
-        }
-      }
+    function findRecipe() {
+      return recipes.find(exactRecipeMatch) || null;
+    }
 
-      return null;
+    function allItems() {
+      const items = new Set(starterItems);
+
+      recipes.forEach(recipe => {
+        recipe.ingredients.forEach(item => items.add(item));
+        items.add(recipe.output);
+      });
+
+      return items;
+    }
+
+    function createStationCard(name) {
+      const card = document.createElement("div");
+      card.className = "station" + (name === currentStation ? " active" : "");
+      card.innerHTML = `
+        <img src="${itemImageUrl(name)}" alt="${name}" onerror="this.src='data:image/svg+xml,${fallbackSvg}'">
+        <div class="station-name">${name}</div>
+      `;
+
+      card.addEventListener("click", () => {
+        currentStation = name;
+        currentStationEl.textContent = name;
+        renderStations();
+        statusBox.textContent = `station selected: ${name}.`;
+      });
+
+      return card;
     }
 
     function createItemCard(name, extraClass = "") {
       const card = document.createElement("div");
-      card.className = "item " + extraClass;
-      card.draggable = true;
+      const isSelected = selected.includes(name);
+      card.className = "item " + extraClass + (isSelected ? " selected" : "");
       card.dataset.item = name;
 
       card.innerHTML = `
@@ -696,21 +758,33 @@ This is intentionally excessive. Good luck.</div>
         <div class="item-name">${name}</div>
       `;
 
-      card.addEventListener("dragstart", (event) => {
-        event.dataTransfer.setData("text/plain", name);
-      });
-
       card.addEventListener("click", () => {
-        addToSlot(name);
+        toggleIngredient(name);
       });
 
       return card;
     }
 
+    function toggleIngredient(name) {
+      if (selected.includes(name)) {
+        selected = selected.filter(item => item !== name);
+      } else {
+        selected.push(name);
+      }
+
+      renderSelected();
+      renderInventory();
+    }
+
+    function renderStations() {
+      stationGrid.innerHTML = "";
+      stations.forEach(station => stationGrid.appendChild(createStationCard(station)));
+    }
+
     function renderInventory(newItem = null) {
       inventoryEl.innerHTML = "";
 
-      [...discovered].sort().forEach((name) => {
+      [...discovered].sort().forEach(name => {
         inventoryEl.appendChild(createItemCard(name, name === newItem ? "new" : ""));
       });
 
@@ -718,104 +792,71 @@ This is intentionally excessive. Good luck.</div>
       renderRecipeList();
     }
 
-    function renderSlots() {
-      renderSlot(slotAEl, slotA, "slot A");
-      renderSlot(slotBEl, slotB, "slot B");
-    }
+    function renderSelected() {
+      selectedList.innerHTML = "";
 
-    function renderSlot(el, item, label) {
-      el.classList.toggle("filled", Boolean(item));
-
-      if (!item) {
-        el.innerHTML = `<div class="small">${label}</div>`;
+      if (selected.length === 0) {
+        selectedList.innerHTML = `<span class="selected-pill">none</span>`;
         return;
       }
 
-      el.innerHTML = `
-        <div>
-          <img src="${itemImageUrl(item)}" alt="${item}" onerror="this.src='data:image/svg+xml,${fallbackSvg}'">
-          <div class="item-name">${item}</div>
-        </div>
-      `;
+      selected.forEach(item => {
+        const pill = document.createElement("span");
+        pill.className = "selected-pill";
+        pill.textContent = item;
+        selectedList.appendChild(pill);
+      });
     }
 
-    function addToSlot(item) {
-      if (!slotA) {
-        slotA = item;
-      } else if (!slotB) {
-        slotB = item;
-      } else {
-        slotA = slotB;
-        slotB = item;
-      }
-
-      renderSlots();
-
-      if (slotA && slotB) {
-        combine();
-      }
-    }
-
-    function combine() {
-      if (!slotA || !slotB) {
-        statusBox.textContent = "need two items.";
+    function craft() {
+      if (!currentStation) {
+        statusBox.textContent = "select a crafting station first.";
         return;
       }
 
-      const result = findRecipe(slotA, slotB);
-
-      if (!result) {
-        statusBox.textContent = `${slotA} + ${slotB} makes nothing.`;
-        slotA = null;
-        slotB = null;
-        renderSlots();
+      if (selected.length === 0) {
+        statusBox.textContent = "select ingredients first.";
         return;
       }
 
-      const key = `${slotA} + ${slotB} → ${result}`;
-      solvedRecipes.add(key);
+      const recipe = findRecipe();
 
-      const isNew = !discovered.has(result);
-      discovered.add(result);
+      if (!recipe) {
+        statusBox.textContent = `nothing crafted at ${currentStation} with: ${selected.join(", ")}.`;
+        return;
+      }
 
-      localStorage.setItem("zenithDiscovered", JSON.stringify([...discovered]));
-      localStorage.setItem("zenithRecipes", JSON.stringify([...solvedRecipes]));
+      const isNew = !discovered.has(recipe.output);
+      discovered.add(recipe.output);
+
+      const line = `${recipe.station}: ${recipe.ingredients.join(" + ")} → ${recipe.output}`;
+      solvedRecipes.add(line);
+
+      localStorage.setItem("zenithStationDiscovered", JSON.stringify([...discovered]));
+      localStorage.setItem("zenithStationRecipes", JSON.stringify([...solvedRecipes]));
 
       statusBox.textContent = isNew
-        ? `${slotA} + ${slotB} → ${result}. new item discovered.`
-        : `${slotA} + ${slotB} → ${result}. already known.`;
+        ? `${recipe.output} crafted.`
+        : `${recipe.output} already known.`;
 
-      slotA = null;
-      slotB = null;
-      renderSlots();
-      renderInventory(isNew ? result : null);
+      selected = [];
+      renderSelected();
+      renderInventory(isNew ? recipe.output : null);
 
-      if (result === "Zenith") {
+      if (recipe.output === "Zenith") {
         successBox.classList.add("visible");
       }
-    }
-
-    function allItems() {
-      const items = new Set(starterItems);
-
-      recipes.forEach(([inputs, output]) => {
-        items.add(inputs[0]);
-        items.add(inputs[1]);
-        items.add(output);
-      });
-
-      return items;
     }
 
     function renderRecipeList() {
       recipeList.innerHTML = "";
 
       if (solvedRecipes.size === 0) {
-        recipeList.innerHTML = `<div class="recipe-line">no recipes discovered yet.</div>`;
+        recipeList.innerHTML = `<div class="recipe-line">no recipes solved yet.</div>`;
         return;
       }
 
-      [...solvedRecipes].sort().forEach((line) => {
+      [...solvedRecipes].sort().forEach(line => {
         const div = document.createElement("div");
         div.className = "recipe-line";
         div.textContent = line;
@@ -824,42 +865,28 @@ This is intentionally excessive. Good luck.</div>
     }
 
     function resetGame() {
-      localStorage.removeItem("zenithDiscovered");
-      localStorage.removeItem("zenithRecipes");
+      localStorage.removeItem("zenithStationDiscovered");
+      localStorage.removeItem("zenithStationRecipes");
       discovered.clear();
       solvedRecipes.clear();
       starterItems.forEach(item => discovered.add(item));
-      slotA = null;
-      slotB = null;
+      currentStation = null;
+      selected = [];
       successBox.classList.remove("visible");
+      currentStationEl.textContent = "none";
       statusBox.textContent = "reset.";
-      renderSlots();
+      renderStations();
+      renderSelected();
       renderInventory();
     }
 
-    dropZone.addEventListener("dragover", (event) => {
-      event.preventDefault();
-      dropZone.classList.add("drag-over");
-    });
-
-    dropZone.addEventListener("dragleave", () => {
-      dropZone.classList.remove("drag-over");
-    });
-
-    dropZone.addEventListener("drop", (event) => {
-      event.preventDefault();
-      dropZone.classList.remove("drag-over");
-      const item = event.dataTransfer.getData("text/plain");
-      if (item) addToSlot(item);
-    });
-
-    document.getElementById("combine-button").addEventListener("click", combine);
+    document.getElementById("craft-button").addEventListener("click", craft);
 
     document.getElementById("clear-button").addEventListener("click", () => {
-      slotA = null;
-      slotB = null;
-      statusBox.textContent = "cleared.";
-      renderSlots();
+      selected = [];
+      renderSelected();
+      renderInventory();
+      statusBox.textContent = "ingredients cleared.";
     });
 
     document.getElementById("reset-game").addEventListener("click", resetGame);
@@ -868,7 +895,8 @@ This is intentionally excessive. Good luck.</div>
       recipeList.hidden = !recipeList.hidden;
     });
 
-    renderSlots();
+    renderStations();
+    renderSelected();
     renderInventory();
 
     if (discovered.has("Zenith")) {

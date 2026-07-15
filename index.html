@@ -7,8 +7,34 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <video class="landing-video" autoplay muted loop playsinline preload="auto">
+  <video id="landingVideo" class="landing-video" autoplay muted loop playsinline>
     <source src="assets/video/landing.mp4" type="video/mp4" />
   </video>
+
+  <audio id="entryAudio" preload="auto" loop>
+    <source src="assets/audio/patchmade.mp3" type="audio/mpeg" />
+  </audio>
+
+  <button id="enterButton" class="enter-button" type="button" aria-label="Enter site">
+    enter
+  </button>
+
+  <script>
+    const enterButton = document.getElementById('enterButton');
+    const entryAudio = document.getElementById('entryAudio');
+    const landingVideo = document.getElementById('landingVideo');
+
+    enterButton.addEventListener('click', async () => {
+      document.body.classList.add('entered');
+      landingVideo.muted = false;
+
+      try {
+        entryAudio.volume = 0.72;
+        await entryAudio.play();
+      } catch (error) {
+        console.warn('Audio playback was blocked or the audio file is missing.', error);
+      }
+    });
+  </script>
 </body>
 </html>

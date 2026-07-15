@@ -14,27 +14,36 @@ button, input { font: inherit; }
 }
 .enter-button:hover { background: rgba(255,255,255,.13); border-color: rgba(255,255,255,.82); transform: translateX(-50%) translateY(-1px); }
 
-.desktop-screen, .itunes-page { position: fixed; inset: 0; width: 100vw; height: 100vh; overflow: hidden; }
+.desktop-screen { position: fixed; inset: 0; width: 100vw; height: 100vh; overflow: hidden; }
 .desktop-bg { width: 100vw; height: 100vh; object-fit: cover; display: block; user-select: none; pointer-events: none; }
-.desktop-hitbox, .tray-hitbox { position: absolute; background: transparent; border: 0; cursor: pointer; }
-/* matches the generated desktop: recycle bin + iTunes in top-left */
-.itunes-hitbox { left: 72px; top: 4px; width: 98px; height: 118px; }
-.itunes-hitbox:hover { outline: 1px dotted rgba(255,255,255,.5); background: rgba(80,160,255,.16); }
-.speaker-hitbox { right: 106px; bottom: 13px; width: 24px; height: 28px; }
+.desktop-hitbox, .tray-hitbox { position: absolute; background: transparent; border: 0; cursor: default; }
+.desktop-hitbox:hover, .desktop-hitbox.selected { outline: 1px dotted rgba(255,255,255,.5); background: rgba(56, 126, 255, .18); }
+.recycle-hitbox { left: 8px; top: 8px; width: 78px; height: 108px; }
+.itunes-hitbox { left: 94px; top: 8px; width: 82px; height: 108px; }
+.speaker-hitbox { right: 112px; bottom: 12px; width: 31px; height: 32px; z-index: 8; cursor: pointer; }
+.speaker-hitbox:hover { background: rgba(255,255,255,.18); border-radius: 2px; }
+
+.desktop-selection { position: absolute; pointer-events: none; border: 1px dotted #fff; background: rgba(60, 140, 255, .20); }
+
+.win7-window, .itunes-window { z-index: 4; }
+.win7-window { position: absolute; background: #f8fbff; border: 1px solid #3d78b8; border-radius: 6px 6px 3px 3px; box-shadow: 0 20px 55px rgba(0,0,0,.40), inset 0 1px rgba(255,255,255,.9); overflow: hidden; }
+.small-window { left: 22vw; top: 22vh; width: 360px; height: 230px; }
+.win7-titlebar { height: 31px; display: flex; align-items: center; justify-content: space-between; padding-left: 10px; color: #10233b; font-size: 12px; text-shadow: 0 1px rgba(255,255,255,.7); background: linear-gradient(#d9efff, #96c8f5 48%, #5da3e6 50%, #b7dcfa); border-bottom: 1px solid #4f8ec5; }
+.win7-close { margin-right: 6px; width: 45px; height: 20px; line-height: 18px; color: white; background: linear-gradient(#ee9f8e, #c4412c); border: 1px solid #8f2b20; border-radius: 0 0 3px 3px; cursor: pointer; }
+.win7-empty { height: calc(100% - 31px); display: grid; place-items: center; color: #555; font-size: 13px; }
 
 .volume-popup {
-  position: absolute; right: 78px; bottom: 43px; width: 86px; height: 238px;
+  position: absolute; right: 80px; bottom: 45px; width: 88px; height: 250px;
   border: 1px solid rgba(54,83,104,.95); border-radius: 5px;
   background: linear-gradient(#f4fbff, #dfeaf3); box-shadow: 0 12px 28px rgba(0,0,0,.35), inset 0 1px 0 #fff;
-  color: #111; text-align: center; padding: 10px 8px; z-index: 5;
+  color: #111; text-align: center; padding: 10px 8px; z-index: 9;
 }
-.volume-popup::after { content: ''; position: absolute; right: 31px; bottom: -8px; width: 14px; height: 14px; transform: rotate(45deg); background: #dfeaf3; border-right: 1px solid rgba(54,83,104,.95); border-bottom: 1px solid rgba(54,83,104,.95); }
+.volume-popup::after { content: ''; position: absolute; right: 28px; bottom: -8px; width: 14px; height: 14px; transform: rotate(45deg); background: #dfeaf3; border-right: 1px solid rgba(54,83,104,.95); border-bottom: 1px solid rgba(54,83,104,.95); }
 .volume-title { font-size: 12px; margin-bottom: 8px; color: #223; }
 .win7-volume-slider { writing-mode: vertical-lr; direction: rtl; width: 38px; height: 150px; accent-color: #4ca3e6; }
-.volume-percent { font-size: 11px; margin-top: 8px; color: #222; }
+.speaker-glyph { margin-top: 3px; font-size: 18px; }
+.volume-percent { font-size: 11px; margin-top: 4px; color: #222; }
 
-.itunes-page { background: #0a4da1; }
-.itunes-desktop-backdrop { position: absolute; inset: 0; background-image: url('assets/img/windows7-desktop.png'); background-size: cover; background-position: center; filter: blur(1px) brightness(.76); transform: scale(1.01); }
 .itunes-window {
   position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
   width: min(1040px, 94vw); height: min(680px, 86vh);
@@ -55,6 +64,7 @@ button, input { font: inherit; }
 }
 .round-control:hover { filter: brightness(1.05); }
 .round-control.play { width: 37px; height: 37px; font-size: 15px; }
+.close-control { color: #933; }
 .lcd-display {
   flex: 1; height: 40px; min-width: 260px; border: 1px solid #b9c2a7; border-radius: 3px;
   background: linear-gradient(#eef5d1, #dbe6b2); display: grid; place-items: center; color: #333;

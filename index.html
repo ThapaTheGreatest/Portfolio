@@ -15,13 +15,17 @@
   </main>
 
   <section id="desktop" class="desktop-screen hidden" aria-label="Windows 7 desktop">
-    <img class="desktop-bg" src="assets/img/windows7-desktop.png" alt="Windows 7 desktop" />
+    <div class="desktop-wallpaper" aria-hidden="true"></div>
 
-    <!-- Double-click hit zones over desktop icons. The icons are part of the desktop image. -->
-    <button id="recycleShortcut" class="desktop-hitbox recycle-hitbox" type="button" aria-label="Recycle Bin"></button>
-    <button id="itunesShortcut" class="desktop-hitbox itunes-hitbox" type="button" aria-label="Open iTunes"></button>
+    <button id="recycleShortcut" class="desktop-icon recycle-shortcut" type="button" aria-label="Recycle Bin">
+      <img src="assets/img/recycle-bin.png" alt="" draggable="false" />
+      <span>Recycle Bin</span>
+    </button>
 
-    <div id="desktopSelection" class="desktop-selection hidden"></div>
+    <button id="itunesShortcut" class="desktop-icon itunes-shortcut" type="button" aria-label="Open iTunes">
+      <img src="assets/img/itunes-icon.png" alt="" draggable="false" />
+      <span>iTunes</span>
+    </button>
 
     <div id="recycleWindow" class="win7-window small-window hidden" role="dialog" aria-label="Recycle Bin">
       <div class="win7-titlebar">
@@ -106,14 +110,20 @@
       </div>
     </div>
 
-    <!-- Click this taskbar speaker zone to open the Windows 7-style volume slider. -->
     <button id="speakerButton" class="tray-hitbox speaker-hitbox" type="button" aria-label="Volume"></button>
 
-    <div id="volumePopup" class="volume-popup hidden" aria-label="Windows 7 volume control">
-      <div class="volume-title">Speakers</div>
-      <input id="volumeSlider" class="win7-volume-slider" type="range" min="0" max="100" value="30" orient="vertical" aria-label="Music volume" />
-      <div class="speaker-glyph">🔊</div>
-      <div class="volume-percent"><span id="volumeReadout">30</span>%</div>
+    <div id="volumePopup" class="win7-volume-popup hidden" aria-label="Windows 7 volume control">
+      <div class="device-speaker" aria-hidden="true"></div>
+      <div id="volumeTrack" class="volume-track" role="slider" aria-label="Music volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="30" tabindex="0">
+        <div class="volume-slot"></div>
+        <div id="volumeFill" class="volume-fill"></div>
+        <button id="volumeThumb" class="volume-thumb" type="button" aria-hidden="true"></button>
+      </div>
+      <button id="muteButton" class="mute-button" type="button" aria-label="Mute or unmute">
+        <span class="speaker-shape" aria-hidden="true"></span>
+      </button>
+      <button class="mixer-link" type="button">Mixer</button>
+      <span id="volumeReadout" class="volume-readout">30</span>
     </div>
   </section>
 

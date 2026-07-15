@@ -52,3 +52,65 @@ body.entered .enter-button {
   pointer-events: none;
   transform: translate(-50%, -50%) scale(0.96);
 }
+
+.volume-control {
+  position: fixed;
+  right: 2rem;
+  bottom: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(255, 255, 255, 0.82);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 450ms ease, transform 450ms ease;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: lowercase;
+  user-select: none;
+}
+
+body.entered .volume-control {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.volume-label,
+.volume-value {
+  text-shadow: 0 0 14px rgba(0, 0, 0, 0.8);
+}
+
+.volume-value {
+  min-width: 2ch;
+  text-align: right;
+}
+
+.volume-slider {
+  width: min(26vw, 190px);
+  accent-color: #fff;
+  cursor: pointer;
+}
+
+.volume-slider:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.85);
+  outline-offset: 4px;
+}
+
+@media (max-width: 640px) {
+  .volume-control {
+    left: 50%;
+    right: auto;
+    bottom: 1.25rem;
+    transform: translate(-50%, 10px);
+  }
+
+  body.entered .volume-control {
+    transform: translate(-50%, 0);
+  }
+
+  .volume-slider {
+    width: 150px;
+  }
+}

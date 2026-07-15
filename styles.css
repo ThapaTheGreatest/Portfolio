@@ -4,11 +4,15 @@
 
 html,
 body {
-  margin: 0;
   width: 100%;
   height: 100%;
+  margin: 0;
   overflow: hidden;
   background: #000;
+}
+
+body {
+  font-family: Georgia, 'Times New Roman', serif;
 }
 
 .landing-video {
@@ -20,3 +24,31 @@ body {
   background: #000;
 }
 
+.enter-button {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(0, 0, 0, 0.35);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 0.85rem 2.2rem;
+  font: inherit;
+  font-size: clamp(1rem, 1.5vw, 1.35rem);
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: opacity 450ms ease, transform 450ms ease, border-color 250ms ease;
+}
+
+.enter-button:hover {
+  border-color: rgba(255, 255, 255, 0.95);
+  transform: translate(-50%, -50%) scale(1.035);
+}
+
+body.entered .enter-button {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.96);
+}

@@ -14,32 +14,30 @@
     <button id="enterBtn" class="enter-button" type="button">enter</button>
   </main>
 
-  <section id="desktop" class="desktop-screen hidden" aria-label="Windows desktop">
-    <img class="desktop-bg" src="assets/img/windows7-desktop.png" alt="Windows 7 desktop background" />
+  <section id="desktop" class="desktop-screen hidden" aria-label="Windows 7 desktop">
+    <img class="desktop-bg" src="assets/img/windows7-desktop.png" alt="Windows 7 desktop" />
 
-    <!-- transparent hit box over the iTunes desktop shortcut -->
+    <!-- Double-click hit zones over desktop icons. The icons are part of the desktop image. -->
+    <button id="recycleShortcut" class="desktop-hitbox recycle-hitbox" type="button" aria-label="Recycle Bin"></button>
     <button id="itunesShortcut" class="desktop-hitbox itunes-hitbox" type="button" aria-label="Open iTunes"></button>
 
-    <!-- transparent hit box over the taskbar speaker area -->
-    <button id="speakerButton" class="tray-hitbox speaker-hitbox" type="button" aria-label="Volume"></button>
+    <div id="desktopSelection" class="desktop-selection hidden"></div>
 
-    <div id="volumePopup" class="volume-popup hidden" aria-label="Windows 7 volume mixer">
-      <div class="volume-title">Speakers</div>
-      <input id="volumeSlider" class="win7-volume-slider" type="range" min="0" max="100" value="30" orient="vertical" aria-label="Music volume" />
-      <div class="volume-percent"><span id="volumeReadout">30</span>%</div>
+    <div id="recycleWindow" class="win7-window small-window hidden" role="dialog" aria-label="Recycle Bin">
+      <div class="win7-titlebar">
+        <span>Recycle Bin</span>
+        <button class="win7-close" data-close="recycleWindow" type="button">×</button>
+      </div>
+      <div class="win7-empty">This folder is empty.</div>
     </div>
-  </section>
 
-  <section id="itunesPage" class="itunes-page hidden" aria-label="iTunes library">
-    <div class="itunes-desktop-backdrop"></div>
-
-    <div class="itunes-window" role="dialog" aria-label="iTunes music window">
+    <div id="itunesWindow" class="itunes-window hidden" role="dialog" aria-label="iTunes music window">
       <div class="traffic-lights" aria-hidden="true">
         <span class="red"></span><span class="yellow"></span><span class="green"></span>
       </div>
 
       <div class="itunes-toolbar">
-        <button id="backToDesktop" class="round-control" type="button" aria-label="Back to desktop">×</button>
+        <button id="closeItunes" class="round-control close-control" type="button" aria-label="Close iTunes">×</button>
         <button id="prevTrack" class="round-control" type="button" aria-label="Previous track">◀</button>
         <button id="playPause" class="round-control play" type="button" aria-label="Play or pause">Ⅱ</button>
         <button id="nextTrack" class="round-control" type="button" aria-label="Next track">▶</button>
@@ -106,6 +104,16 @@
         <span>2 songs</span>
         <span id="statusText">Patchmade is loaded.</span>
       </div>
+    </div>
+
+    <!-- Click this taskbar speaker zone to open the Windows 7-style volume slider. -->
+    <button id="speakerButton" class="tray-hitbox speaker-hitbox" type="button" aria-label="Volume"></button>
+
+    <div id="volumePopup" class="volume-popup hidden" aria-label="Windows 7 volume control">
+      <div class="volume-title">Speakers</div>
+      <input id="volumeSlider" class="win7-volume-slider" type="range" min="0" max="100" value="30" orient="vertical" aria-label="Music volume" />
+      <div class="speaker-glyph">🔊</div>
+      <div class="volume-percent"><span id="volumeReadout">30</span>%</div>
     </div>
   </section>
 

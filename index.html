@@ -7,29 +7,50 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <video id="landingVideo" class="landing-video" autoplay muted loop playsinline>
+  <video id="landingVideo" class="landing-video" autoplay muted loop playsinline poster="assets/img/landing-poster.jpg">
     <source src="assets/video/landing.mp4" type="video/mp4" />
   </video>
 
   <audio id="entryAudio" preload="auto" loop>
     <source src="assets/audio/patchmade.mp3" type="audio/mpeg" />
+    <source src="assets/audio/Patchmade.mp3" type="audio/mpeg" />
   </audio>
 
   <button id="enterButton" class="enter-button" type="button" aria-label="Enter site">
     enter
   </button>
 
+  <div id="volumeControl" class="volume-control" aria-label="Music volume control">
+    <span class="volume-label">volume</span>
+    <input id="volumeSlider" class="volume-slider" type="range" min="0" max="100" value="30" aria-label="Volume" />
+    <span id="volumeValue" class="volume-value">30</span>
+  </div>
+
   <script>
     const enterButton = document.getElementById('enterButton');
     const entryAudio = document.getElementById('entryAudio');
     const landingVideo = document.getElementById('landingVideo');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const volumeValue = document.getElementById('volumeValue');
+
+    function setVolume(value) {
+      const normalizedVolume = Number(value) / 100;
+      entryAudio.volume = normalizedVolume;
+      volumeValue.textContent = String(value).padStart(2, '0');
+    }
+
+    setVolume(volumeSlider.value);
+
+    volumeSlider.addEventListener('input', () => {
+      setVolume(volumeSlider.value);
+    });
 
     enterButton.addEventListener('click', async () => {
       document.body.classList.add('entered');
       landingVideo.muted = false;
+      setVolume(volumeSlider.value);
 
       try {
-        entryAudio.volume = 0.72;
         await entryAudio.play();
       } catch (error) {
         console.warn('Audio playback was blocked or the audio file is missing.', error);

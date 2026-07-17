@@ -34,7 +34,22 @@ button { -webkit-tap-highlight-color: transparent; }
 .itunes-shortcut { left: 86px; top: 6px; }
 
 .tray-hitbox { position: absolute; background: transparent; border: 0; cursor: default; }
-.speaker-hitbox { right: 112px; bottom: 10px; width: 30px; height: 30px; z-index: 8; cursor: pointer; border-radius: 2px; }
+/*
+ * The speaker is part of the wallpaper image, not a separate icon. These
+ * fallback values match the source image; script.js replaces them with the
+ * wallpaper's exact scaled coordinates so the hover target cannot drift.
+ */
+.speaker-hitbox {
+  left: var(--speaker-left, calc(91.388%));
+  top: var(--speaker-top, calc(95.218%));
+  right: auto;
+  bottom: auto;
+  width: var(--speaker-width, calc(1.914%));
+  height: var(--speaker-height, calc(4.251%));
+  z-index: 8;
+  cursor: pointer;
+  border-radius: 2px;
+}
 .speaker-hitbox:hover { background: rgba(255,255,255,.20); box-shadow: inset 0 0 0 1px rgba(255,255,255,.28); }
 
 .win7-window, .itunes-window { z-index: 4; }
@@ -47,7 +62,11 @@ button { -webkit-tap-highlight-color: transparent; }
 /* Windows 7-style system volume flyout */
 .win7-volume-popup {
   --level: 30;
-  position: absolute; right: 82px; bottom: 45px; width: 76px; height: 238px; z-index: 11;
+  position: absolute;
+  left: var(--volume-popup-left, auto);
+  right: var(--volume-popup-right, 82px);
+  bottom: var(--volume-popup-bottom, 45px);
+  width: 76px; height: 238px; z-index: 11;
   border: 1px solid rgba(39, 70, 96, .95); border-radius: 5px;
   background: linear-gradient(#f6fbff 0%, #ffffff 22%, #f7fbff 68%, #dcebf7 100%);
   box-shadow: 0 7px 22px rgba(0,0,0,.42), inset 0 0 0 1px rgba(255,255,255,.9), inset 0 0 13px rgba(92,150,200,.22);

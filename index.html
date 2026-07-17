@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>prayashthapa.org</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main id="boot" class="boot-screen" aria-label="Intro video">
+    <video id="landingVideo" class="landing-video" autoplay muted loop playsinline preload="auto">
+      <source src="assets/video/landing.mp4" type="video/mp4" />
+    </video>
+    <button id="enterBtn" class="enter-button" type="button">enter</button>
+  </main>
+
+  <section id="desktop" class="desktop-screen hidden" aria-label="Windows 7 desktop">
+    <div class="desktop-wallpaper" aria-hidden="true"></div>
+
+    <button id="recycleShortcut" class="desktop-icon recycle-shortcut" type="button" aria-label="Recycle Bin">
+      <img src="assets/img/recycle-bin.png" alt="" draggable="false" />
+      <span>Recycle Bin</span>
+    </button>
+
+    <button id="itunesShortcut" class="desktop-icon itunes-shortcut" type="button" aria-label="Open iTunes">
+      <img src="assets/img/itunes-icon.png" alt="" draggable="false" />
+      <span>iTunes</span>
+    </button>
+
+    <div id="recycleWindow" class="win7-window small-window hidden" role="dialog" aria-label="Recycle Bin">
+      <div class="win7-titlebar">
+        <span>Recycle Bin</span>
+        <button class="win7-close" data-close="recycleWindow" type="button">×</button>
+      </div>
+      <div class="win7-empty">This folder is empty.</div>
+    </div>
+
+    <div id="itunesWindow" class="itunes-window hidden" role="dialog" aria-label="iTunes music window">
+      <div class="traffic-lights" aria-hidden="true">
+        <span class="red"></span><span class="yellow"></span><span class="green"></span>
+      </div>
+
+      <div class="itunes-toolbar">
+        <button id="closeItunes" class="round-control close-control" type="button" aria-label="Close iTunes">×</button>
+        <button id="prevTrack" class="round-control" type="button" aria-label="Previous track">◀</button>
+        <button id="playPause" class="round-control play" type="button" aria-label="Play or pause">Ⅱ</button>
+        <button id="nextTrack" class="round-control" type="button" aria-label="Next track">▶</button>
+        <div class="lcd-display">
+          <div class="apple-mark">●</div>
+          <div id="nowPlaying">Patchmade — xaviersobased</div>
+        </div>
+        <input id="itunesVolume" class="itunes-volume" type="range" min="0" max="100" value="30" aria-label="iTunes volume" />
+        <input class="itunes-search" type="search" placeholder="Search" aria-label="Search library" />
+      </div>
+
+      <div class="itunes-body">
+        <aside class="itunes-sidebar">
+          <h3>LIBRARY</h3>
+          <button class="side-item active" type="button">♫ Music</button>
+          <button class="side-item" type="button">Movies</button>
+          <button class="side-item" type="button">TV Shows</button>
+          <button class="side-item" type="button">Podcasts</button>
+          <button class="side-item" type="button">Radio</button>
+          <h3>STORE</h3>
+          <button class="side-item" type="button">iTunes Store</button>
+          <button class="side-item" type="button">Purchased</button>
+          <h3>PLAYLISTS</h3>
+          <button class="side-item" type="button">Prayash</button>
+          <button class="side-item" type="button">Windows 7</button>
+        </aside>
+
+        <div class="library-view">
+          <div class="album-row">
+            <div class="album-art patchmade-art">P</div>
+            <div class="track-table-wrap">
+              <div class="album-title">Patchmade</div>
+              <table class="track-table">
+                <thead>
+                  <tr><th></th><th>Name</th><th>Time</th><th>Artist</th><th>Genre</th><th>Rating</th></tr>
+                </thead>
+                <tbody>
+                  <tr class="track active" data-track="0">
+                    <td>✓</td><td>Patchmade</td><td>--:--</td><td>xaviersobased</td><td>Internet</td><td>★★★★★</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="album-row">
+            <div class="album-art acog-art">A</div>
+            <div class="track-table-wrap">
+              <div class="album-title">ACOG</div>
+              <table class="track-table">
+                <tbody>
+                  <tr class="track" data-track="1">
+                    <td>✓</td><td>ACOG</td><td>--:--</td><td>chanelfather</td><td>Internet</td><td>★★★★☆</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="missing-note">Add <code>assets/audio/ACOG.mp3</code> when you have the file.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="itunes-statusbar">
+        <span>2 songs</span>
+        <span id="statusText">Patchmade is loaded.</span>
+      </div>
+    </div>
+
+    <button id="speakerButton" class="tray-hitbox speaker-hitbox" type="button" aria-label="Volume"></button>
+
+    <div id="volumePopup" class="win7-volume-popup hidden" aria-label="Windows 7 volume control">
+      <div class="device-speaker" aria-hidden="true"></div>
+      <div id="volumeTrack" class="volume-track" role="slider" aria-label="Music volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="30" tabindex="0">
+        <div class="volume-slot"></div>
+        <div id="volumeFill" class="volume-fill"></div>
+        <button id="volumeThumb" class="volume-thumb" type="button" aria-hidden="true"></button>
+      </div>
+      <button id="muteButton" class="mute-button" type="button" aria-label="Mute or unmute">
+        <span class="speaker-shape" aria-hidden="true"></span>
+      </button>
+      <button class="mixer-link" type="button">Mixer</button>
+      <span id="volumeReadout" class="volume-readout">30</span>
+    </div>
+  </section>
+
+  <audio id="musicPlayer" preload="auto">
+    <source src="assets/audio/Patchmade.mp3" type="audio/mpeg" />
+    <source src="assets/audio/patchmade.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script src="script.js"></script>
+</body>
+</html>

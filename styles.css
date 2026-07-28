@@ -40,12 +40,12 @@ button { -webkit-tap-highlight-color: transparent; }
  * wallpaper's exact scaled coordinates so the hover target cannot drift.
  */
 .speaker-hitbox {
-  left: var(--speaker-left, calc(91.388%));
-  top: var(--speaker-top, calc(95.218%));
+  left: var(--speaker-left, 91.15%);
+  top: var(--speaker-top, 95.01%);
   right: auto;
   bottom: auto;
-  width: var(--speaker-width, calc(1.914%));
-  height: var(--speaker-height, calc(4.251%));
+  width: var(--speaker-width, 2.15%);
+  height: var(--speaker-height, 4.36%);
   z-index: 8;
   cursor: pointer;
   border-radius: 2px;
@@ -99,7 +99,7 @@ button { -webkit-tap-highlight-color: transparent; }
 
 /* Maximized iTunes window: fills the desktop above the Windows taskbar. */
 .itunes-window {
-  position: absolute; left: 7px; top: 7px; right: 7px; bottom: 47px; width: auto; height: auto; transform: none;
+  position: absolute; left: 7px; top: 7px; right: 7px; bottom: calc(var(--taskbar-height, 41px) + 6px); width: auto; height: auto; transform: none;
   border-radius: 7px 7px 3px 3px; overflow: hidden; border: 1px solid #8c8c8c; background: #f3f3f3;
   box-shadow: 0 18px 65px rgba(0,0,0,.38), inset 0 1px #fff;
 }

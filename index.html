@@ -7,11 +7,40 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main id="boot" class="boot-screen" aria-label="Intro video">
-    <video id="landingVideo" class="landing-video" autoplay muted loop playsinline preload="auto">
-      <source src="assets/video/landing.mp4" type="video/mp4" />
-    </video>
-    <button id="enterBtn" class="enter-button" type="button">enter</button>
+  <main id="login" class="login-screen" aria-label="Windows 7 sign in">
+    <div class="login-lines" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <button id="profileButton" class="login-profile" type="button" aria-label="Enter as ThapaTheGreat">
+      <span class="profile-frame">
+        <img
+          class="profile-image"
+          src="assets/img/potsu-profile.png"
+          alt="Potsu album artwork"
+        />
+      </span>
+      <span class="account-name">ThapaTheGreat</span>
+      <span class="account-prompt">Click to enter</span>
+    </button>
+
+    <div id="welcomeMessage" class="welcome-message hidden" aria-live="polite">
+      <span>ThapaTheGreat</span>
+      <strong>Welcome</strong>
+    </div>
+
+    <div class="windows-brand" aria-label="Windows 7 Professional">
+      <span class="windows-mark" aria-hidden="true">
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+      </span>
+      <span class="windows-name">Windows<sup>7</sup></span>
+      <span class="windows-edition">Professional</span>
+    </div>
   </main>
 
   <section id="desktop" class="desktop-screen hidden" aria-label="Windows 7 desktop">
